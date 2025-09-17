@@ -1,20 +1,30 @@
 ---
 hide:
-    - navigation
-    - toc
-    - template: home.html
+  - navigation
+  - toc
 ---
 
-### Grupos
+### Tema
 
-<div class="grid cards" style="grid-template-columns: repeat(2, 1fr); background: var(--md-default-bg-color);" markdown>
--   :material-github:{ .lg .right } __PFE_25.2_8002_IV__
+<div class="grid cards" markdown>
 
-    ---
+-   __Projeto: Gestão de Monitores IBMEC__
 
-Arthur Maurity, Lucas Jesus, Ricardo Lima, Bernardo Miller e Gianluca Leonardi 
-    [:octicons-arrow-right-24: Repositório](https://github.com/Projetos-de-Extensao/PFE_25.2_8002_IV)
+    Bem-vindo ao Projeto de Monitores do IBMEC.
+
 </div>
+
+### Grupo
+
+<div class="grid cards" markdown>
+
+-   **Arthur Maurity, Lucas Jesus, Ricardo Lima, Bernardo Miller e Gianluca Leonardi**
+
+    [:octicons-arrow-right-24: Repositório](https://github.com/Projetos-de-Extensao/PFE_25.2_8002_IV)
+
+</div>
+
+---
 
 !!! warning "Projeto Front-End"
 
@@ -28,8 +38,3 @@ Arthur Maurity, Lucas Jesus, Ricardo Lima, Bernardo Miller e Gianluca Leonardi
     * Github
 
     As APs deverão ser enviadas no Github e publicadas no github pages.
-
-
-
-
-
