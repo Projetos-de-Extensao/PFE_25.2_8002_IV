@@ -1,7 +1,7 @@
 ---
-repo_url: https://github.com/jonh-carvalho/PFE_25.1_8001
+repo_url: https://github.com/Projetos-de-Extensao/PFE_25.2_8002_IV
 site_author: Jonh Carvalho
-site_name: PFE_25.1_8001
+site_name: PFE_25.2_8002_IV
 copyright: Copyright ©️ 2025, jonh-carvalho / 2025, Jonh Carvalho
 
 extra_css:
@@ -37,7 +37,7 @@ markdown_extensions:
       pygments_lang_class: true
   # Code Blocks
   - pymdownx.inlinehilite
-  # Formatting
+  # Formatting' 
   - pymdownx.keys
   # Formatting
   - pymdownx.mark
