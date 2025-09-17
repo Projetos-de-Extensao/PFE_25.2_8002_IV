@@ -4,7 +4,7 @@ hide:
   - toc
 ---
 
-### Tema
+## Tema
 
 <div class="grid cards" markdown>
 
@@ -14,13 +14,26 @@ hide:
 
 </div>
 
-### Grupo
+## Sobre o Projeto
 
-<div class="grid cards" markdown>
+### Gestão de Monitores IBMEC
 
--   **Arthur Maurity, Lucas Jesus, Ricardo Lima, Bernardo Miller e Gianluca Leonardi**
+Este projeto foi desenvolvido como parte da disciplina de Projeto Front-End e tem como objetivo criar um sistema para a gestão e organização dos monitores acadêmicos do IBMEC.
 
-    [:octicons-arrow-right-24: Repositório](https://github.com/Projetos-de-Extensao/PFE_25.2_8002_IV)
+A plataforma visa facilitar a comunicação, o agendamento de monitorias e o acompanhamento das atividades, beneficiando tanto os alunos quanto os monitores e coordenadores.
+
+---
+## Grupo
+
+| Integrante        | Função           |
+| ----------------- | ---------------- |
+| Arthur Maurity    | Membro da equipe |
+| Lucas Jesus       | Membro da equipe |
+| Ricardo Lima      | Membro da equipe |
+| Bernardo Miller   | Membro da equipe |
+| Gianluca Leonardi | Membro da equipe |
+
+[:octicons-arrow-right-24: Repositório](https://github.com/Projetos-de-Extensao/PFE_25.2_8002_IV)
 
 </div>
 
