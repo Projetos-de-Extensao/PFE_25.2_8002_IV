@@ -1,4 +1,5 @@
-# Projeto Front-End
+# Projeto Front-End: Gestão de Monitores IBMEC
+Alunos: Arthur Maurity, Lucas Jesus, Ricardo Lima, Bernardo Miller, Gianluca Leonardi
 
 ## Sobre 
 Disciplina que planeja o desenvolvimento de um Front-End a partir de uma demanda externa. 
