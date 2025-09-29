@@ -5,7 +5,7 @@ title: Sprint Planning
 
 # Sprint I 
 
-> 15/09/25 à 19/04/2025
+> 15/09/25 à 21/09/2025
 
 ## Planejamento de Interação
 
