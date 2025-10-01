@@ -21,58 +21,11 @@ Iniciamos o projeto através dos levantamentos iniciais da equipe, após discuss
 <a href="https://preview--monitoria-conectada-92312-30013-93638.lovable.app/monitor"> Prototipo Monitoria </a>
 
 <p align = "justify">
-Na primeira versão do protótipo, utilizamos a ferramenta Lovable AI para auxiliar na criação do protótipo do aplicativo. Ainda não decidimos as cores em si, mas fomos atrás de inspirações no site da própria faculdade. Em questão de design, chegamos a um resultado inicial satisfatório, apesar de já esperarmos ter mudanças.</p>
+Na primeira versão do protótipo, utilizamos a ferramenta Lovable AI para auxiliar na criação do protótipo do aplicativo e PlantUML. Ainda não decidimos as cores em si, mas fomos atrás de inspirações no site da própria faculdade. Em questão de design, chegamos a um resultado inicial satisfatório, apesar de já esperarmos ter mudanças.</p>
 
-### Versão 2.0
+![teste](https://www.plantuml.com/plantuml/img/lLR1RjD04Br7oZ-CSceFiI1IBptLSXE8H21gpCaAQ6elpQBrhhkxDWVWOoeEI9LwGbmuuXzZrewTA4qXfeALvIJUcV6RzsPcSsOiQcjGs7xlOxy7KDq01Y4J25F9Ouu2ZbweAowF1-kz6LfTtiMvmDC1V8B1spshiLqmkJh0RFqPUMDfDMflIGvHW38c67hfDZ-xst0ut0OvbIRMlFnQVb5De9SgPH2eD1FCgeVVUn_1E4KkkZXqOM7Eo5GbgZACJdx-WEO9RAytoyOXoBLPMu_bbUDGSuI4mKAzinzGiotRSsvYdWak3m0INC0pfb4SP9dG6pl4RZMiP645ErJ6YT9fBieRpPLBSQBPTLxUIYezysXPkwZqhqW_HukEp5H9RXN5_BEBBtAfJEE1YJArpzF_IaZ8KkmIUwkB2tvm5_kPLWLMNGpK47E1igg3KECbYbNRshEQZ1fGDAl4UILumRX6E0hA6q5PAPWURydaMrxm11DcOAvLfcZScIuP4SDCsgeqpLynKITNKp685ahGHAMH2_xxt5XMuzn7okjCA4mS3IGOqsuAqtS_Kxpb8oplh4kOE6jika3ShU1emo0yC9LyVPtpObrkqO895dCbAHkiDppFspG8QsVp8qgepUp0MgBXnjpWSAfLp8mJebkqfv55cnlmRTvmrHuXtwb49YnUORAPEctUzVvfyploBpNNiEsxINpm6soKq0NXj-KtD-i29GqL19MdsZqem8ynAMzJ7ZTiZvwCJhmHxAwT8sDj75880tJ5xg6vRnpohEgn3PgrvtEQDWQ2FCqq0TlZsGgqcyv-XUWwOpAf_s7qUxy0)
 
-### Tela Login
 
-[![Prototipo 1]
-
-### Tela Cadastro
-
-[![Prototipo 2]
-
-### Tela Esqueceu Senha
-
-[![Prototipo 3]
-
-### Tela Perfil
-
-[![Prototipo 4]
-
-### Tela do Feed
-
-[![Prototipo 5]
-
-### Tela Cadastrar em um torneio
-
-[![Prototipo 6]
-### Tela Cadastrar torneio
-
-[![Prototipo 7]
-
-### Tela Cadastrar torneio 2
-
-[![Prototipo 8]
-
-### Tela dos meus torneios
-
-[![Prototipo 9]
-
-### Tela das chaves do torneio
-
-[![Prototipo 10]
-
-### Tela das estatíscicas
-
-[![Prototipo 11]
-
-### Tela de adicionar resultado das partidas
-
-[![Prototipo 12]
-
-link para o `<a href="https://www.figma.com/file/karoCnQtvMXWHEwdMuhQs0/Prototipo?node-id=0%3A1">`Protótipo `</a>`
 
 ## Conclusão
 
