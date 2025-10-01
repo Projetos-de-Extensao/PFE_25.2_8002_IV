@@ -18,61 +18,10 @@ Iniciamos o projeto através dos levantamentos iniciais da equipe, após discuss
 
 ### Versão 1.0
 
-### Tela Login
-
-Prototipo 1
-![Alt text](https://example.com/image.jpg "Image Title")
-
-### Tela Cadastro 1
-
-[![Prototipo 2]
-
-### Tela Cadastro 2
-
-[![Prototipo 3]
-
-### Tela Esqueceu Senha
-
-[![Prototipo 4]
-
-### Tela do Feed
-
-[![Prototipo 5]
-
-### Tela Feed com configurações
-
-[![Prototipo 6]
-
-### Tela Perfil
-
-[![Prototipo 7]
-
-### Tela Cadastrar torneio 1
-
-[![Prototipo 8]
-### Tela Cadastrar torneio 2
-
-[![Prototipo 9]
-
-### Tela Cadastrar torneio 3
-
-[![Prototipo 10]
-
-### Tela Cadastrar torneio 4
-
-[![Prototipo 11]
-
-### Tela com meus torneios
-
-[![Prototipo 12]
-
-### Tela de inscrição em torneio
-
-[![Prototipo 13]
+<a href="https://preview--monitoria-conectada-92312-30013-93638.lovable.app/monitor"> Prototipo Monitoria </a>
 
 <p align = "justify">
-Na primeira versão do protótipo utilizamos a ferramenta <a href="https://material.io/resources/color/#!/?view.left=0&view.right=0">Material Design Color Tool</a>  para auxiliar na criação da paleta de cores do aplicativo, definimos as cores base do aplicativo mas as cores definidas para as telas 12 e 13 ainda não foram decididas.
-</p>
+Na primeira versão do protótipo, utilizamos a ferramenta Lovable AI para auxiliar na criação do protótipo do aplicativo. Ainda não decidimos as cores em si, mas fomos atrás de inspirações no site da própria faculdade. Em questão de design, chegamos a um resultado inicial satisfatório, apesar de já esperarmos ter mudanças.</p>
 
 ### Versão 2.0
 
@@ -131,19 +80,9 @@ link para o `<a href="https://www.figma.com/file/karoCnQtvMXWHEwdMuhQs0/Prototip
 A partir da elaboração do protótipo foi possível ter uma noção inicial da interface do usuário, definindo fluxo, paleta de cores, botões, app bars e diversas outras funcionalidades
 </p>
 
-## Referências
-
-> Material Design Color Tool. Disponível em:  https://material.io/resources/color/#!/?view.left=0&view.right=0
-
-> PMI. Um guia do conhecimento em gerenciamento de projetos. Guia PMBOK® 5a. ed. EUA: Project Management Institute, 2013.
-
-> Ferramenta Figma. Disponível em https://www.figma.com
-
 ## Autor(es)
 
 | Data     | Versão | Descrição                            | Autor(es)                                                                            |
 | -------- | ------- | -------------------------------------- | ------------------------------------------------------------------------------------ |
-| 07/09/20 | 1.0     | Criação do documento                 | Lucas Alexandre e Matheus Estanislau                                                 |
-| 07/09/20 | 1.1     | Adicionado as imagens do protótipo    | Lucas Alexandre e Matheus Estanislau                                                 |
-| 07/09/20 | 1.2     | Adicionado conclusão e referências   | Lucas Alexandre e Matheus Estanislau                                                 |
-| 26/10/20 | 2.0     | Adicionada a versão 2.0 do protótipo | João Pedro, Lucas Alexandre, Matheus Estanislau, Moacir Mascarenha e Renan Cristyan |
+| 30/09/25 | 1.0     | Criação do documento e anexo do protótipo                | Arthur Maurity e Lucas Jesus                                                |
+| 26/10/20 | 2.0     | Adicionada a versão 2.0 do protótipo | --- |
