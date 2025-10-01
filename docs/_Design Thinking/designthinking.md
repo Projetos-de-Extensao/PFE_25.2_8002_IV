@@ -1,79 +1,96 @@
----
-id: dt
-title: Design Thinking
----
+1. Capa
+Projeto: Plataforma de Gestão de Monitorias IBMEC
 
-## **Design Thinking**
+Equipe: Arthur Maurity, Lucas Jesus, Ricardo Lima, Bernardo Miller e Gianluca Leonardi.
 
-### **1. Capa**
+Data: 30 de Setembro de 2025
 
-- Título do Projeto
-- Nome da Equipe
-- Data
-- Logo da Empresa/Organização (se aplicável)
+2. Introdução
+Contexto do Projeto
+O gerenciamento de monitorias na instituição é um processo manual, o que resulta em ineficiência na comunicação e na organização das atividades.
 
----
+Objetivo
+O objetivo é desenvolver uma plataforma digital para otimizar e centralizar esses processos, beneficiando todos os envolvidos.
 
-### **2. Introdução**
+Público-Alvo
+Monitores
 
-- **Contexto do Projeto**: Breve descrição do problema ou oportunidade.
-- **Objetivo**: O que se espera alcançar com o projeto.
-- **Público-Alvo**: Quem será impactado pela solução.
-- **Escopo**: Limites e abrangência do projeto.
+Professores
 
----
+Coordenadores
 
-### **3. Fases do Design Thinking**
+Alunos
 
-#### **3.1. Empatia**
+Escopo
+O escopo do projeto é o desenvolvimento front-end de uma aplicação web, focada nos perfis de usuário, no sistema de agendamento e em um painel de gestão.
 
-- **Pesquisa**: Métodos utilizados para entender o usuário (entrevistas, observação, etc.).
-- **Insights**: Principais descobertas sobre as necessidades, desejos e dores do usuário.
-- **Personas**: Descrição dos perfis de usuários criados com base na pesquisa.
+3. Fases do Design Thinking
+3.1. Empatia
+Pesquisa
+Realizamos uma pesquisa com monitores, analisamos plataformas de mercado e mapeamos os processos existentes para entender as necessidades dos usuários.
 
-#### **3.2. Definição**
+Insights
+Falta um fluxo formal para a aprovação das atividades dos monitores pelos professores.
 
-- **Problema Central**: Definição clara do problema a ser resolvido (ex.: "Como podemos...?").
-- **Pontos de Vista (POV)**: Frases que sintetizam as necessidades do usuário e os insights.
+O registro de atividades e o compartilhamento de materiais são desorganizados.
 
-#### **3.3. Ideaçã**
+A coordenação não possui acesso a dados consolidados sobre o programa.
 
-- **Brainstorming**: Lista de ideias geradas pela equipe.
-- **Seleção de Ideias**: Critérios utilizados para escolher as melhores ideias.
-- **Ideias Selecionadas**: Descrição das ideias que serão prototipadas.
+A comunicação entre as partes é descentralizada.
 
-#### **3.4. Prototipagem**
+Personas
+Monitor: Precisa de um local centralizado para registrar e submeter suas atividades.
 
-- **Descrição do Protótipo**: Como a ideia foi transformada em um protótipo (esboço, modelo físico, digital, etc.).
-- **Materiais Utilizados**: Recursos necessários para criar o protótipo.
-- **Testes Realizados**: Como o protótipo foi testado.
+Professor: Precisa de um painel para analisar e aprovar o trabalho do monitor de forma eficiente.
 
-#### **3.5. Teste**
+Coordenador: Precisa de acesso a relatórios para gerenciar o programa.
 
-- **Feedback dos Usuários**: O que os usuários acharam do protótipo.
-- **Ajustes Realizados**: Mudanças feitas com base no feedback.
-- **Resultados Finais**: Descrição da solução final.
+3.2. Definição
+Problema Central
+Como podemos projetar um sistema que organize o fluxo de trabalho entre Monitores, Professores e Coordenadores, tornando o processo mais eficiente e transparente?
 
----
+Pontos de Vista (POV)
+Monitor: "Preciso de um sistema para registrar meu trabalho e validar minhas horas de forma oficial."
 
-### **4. Conclusão**
+Professor: "Preciso de uma ferramenta para acompanhar o monitor, garantindo a qualidade do suporte."
 
-- **Resultados Obtidos**: O que foi alcançado com o projeto.
-- **Próximos Passos**: O que ainda precisa ser feito ou implementado.
-- **Aprendizados**: Lições aprendidas durante o processo.
+Coordenador: "Preciso de dados para tomar decisões e comprovar a eficácia do programa."
 
----
+3.3. Ideação
+Brainstorming
+Levantamos ideias de funcionalidades, como painéis específicos para cada perfil, um módulo de aprovação de atividades e a geração de relatórios.
 
-### **5. Anexos**
+Ideias Selecionadas
+Módulo do Monitor: Para o registro de suas tarefas.
 
-- Fotos, gráficos, tabelas, transcrições de entrevistas, etc.
+Módulo do Professor: Para a aprovação dos planos de trabalho.
 
----
+Módulo do Coordenador: Para a gestão e visualização de relatórios.
 
-## **Dicas para Criar o Documento**
+3.4. Prototipagem
+Descrição do Protótipo
+O processo iniciou com esboços de baixa fidelidade para alinhar as ideias. Em seguida, utilizamos PlantUML para criar diagramas que estruturam os fluxos de navegação e a organização das informações do sistema.
 
-- Use uma linguagem clara e objetiva.
-- Inclua visualizações, como mapas de empatia, jornadas do usuário ou esboços de ideias.
-- Adapte o documento conforme o estágio do projeto (ex.: um documento inicial pode focar mais na pesquisa, enquanto um final pode detalhar a solução).
+Materiais Utilizados
+Diagramas UML.
 
-Esse modelo é flexível e pode ser ajustado conforme as necessidades do seu projeto ou da sua equipe. O importante é que o documento reflita o processo colaborativo e iterativo do Design Thinking.
+Testes Realizados
+Apresentamos os diagramas de fluxo aos usuários para validar a lógica e a clareza do processo proposto.
+
+3.5. Teste
+Feedback dos Usuários
+O feedback sobre os fluxos foi positivo. As sugestões incluíram adicionar um campo de justificativa para rejeições de atividades e incluir filtros nos relatórios.
+
+Ajustes Realizados
+Os diagramas foram atualizados no PlantUML para incorporar as melhorias sugeridas.
+
+Resultados Finais
+O resultado é um conjunto de diagramas validados que servem como guia para o desenvolvimento, definindo a estrutura e a conexão entre as funcionalidades.
+
+4. Conclusão
+Resultados Obtidos: Validamos a estrutura e a lógica do sistema antes do início do desenvolvimento.
+
+Próximos Passos: Iniciar a codificação do front-end (HTML, CSS, JS) com base nos diagramas definidos.
+
+Aprendizados: A fase de planejamento e diagramação foi fundamental para alinhar a equipe e garantir que a solução atende às necessidades identificadas.
+
