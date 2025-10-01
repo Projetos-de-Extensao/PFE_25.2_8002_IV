@@ -1,4 +1,6 @@
-### Design Thinking
+| id  | title          |
+|-----|----------------|
+| dt  | Design Thinking|
 
 **1. Capa**
 
@@ -71,6 +73,7 @@
 * **Resultados Obtidos:** Validamos a estrutura e a lógica do sistema antes do início do desenvolvimento.
 * **Próximos Passos:** Iniciar a codificação do front-end (HTML, CSS, JS) com base nos diagramas definidos.
 * **Aprendizados:** A fase de planejamento e diagramação foi fundamental para alinhar a equipe e garantir que a solução atende às necessidades identificadas.
+
 
 
 
