@@ -1,7 +1,15 @@
----
-id: historia_de_usuario
-title: História de Usuário
----
+## Backlog de Histórias de Usuário (Gestão de Monitores)
+
+| ID | Papel | História de Usuário (O que e Por que) | Prioridade |
+|:---|:---|:---|:---:|
+| **HU-MON-001** | **Monitor** | Eu quero **visualizar o meu Plano de Trabalho e horários de atendimento**, para **garantir que estou cumprindo todas as minhas responsabilidades**. | Alta |
+| **HU-MON-002** | **Monitor** | Eu quero **registrar diariamente as horas dedicadas a atendimentos e outras atividades**, para **que meu relatório final de monitoria esteja correto**. | Alta |
+| **HU-MON-003** | **Monitor** | Eu quero **fazer upload de listas de exercícios e tutoriais**, para **auxiliar os alunos da disciplina no estudo**. | Média |
+| **HU-MON-004** | **Monitor** | Eu quero **registrar a presença dos alunos nos meus horários de monitoria**, para **entender o engajamento da turma e reportar ao professor**. | Média |
+| **HU-PROF-001** | **Professor** | Eu quero **analisar e aprovar o Plano de Trabalho proposto pelo Monitor**, para **garantir o alinhamento das atividades com as necessidades da disciplina**. | Alta |
+| **HU-PROF-002** | **Professor** | Eu quero **acessar um painel de controle com o registro de horas do meu monitor**, para **garantir que ele está cumprindo a carga horária estabelecida**. | Média |
+| **HU-COORD-001** | **Coordenador** | Eu quero **abrir e fechar o período de inscrição para o Edital de Monitoria**, para **garantir que a seleção de novos monitores siga o cronograma acadêmico**. | Alta |
+| **HU-COORD-002** | **Coordenador** | Eu quero **gerar um relatório consolidado com o desempenho de todos os monitores e horas cumpridas**, para **apresentar à diretoria da faculdade**. | Média |
 
 ## Scrum
 
