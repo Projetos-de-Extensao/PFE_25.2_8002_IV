@@ -18,7 +18,6 @@ Gianluca Leonard Ricardo Lima
 
 |Tarefa|Responsabilidade|
 |---|----|
-| Decidir o nome o projeto.|Todos|
 | Criar o repositório nos padrões (Organizar wiki).| todos|
 | Criar issues no GitHub / ZenHub|Lucas|
 | Estudar e escolher as metodologias.|Todos|
@@ -39,20 +38,10 @@ Gianluca Leonard Ricardo Lima
 
 - Nenhum: Plano de gerenciamento de riscos não implementado.
 
-#### Pontos Positivos
+#### Pendencias
 
-- 1
-- 2
+- Definir nome do Projeto
 
-![pontos positivos](../assets/Sprints/S1-positivos.png)
-
-#### Pontos Negativos
-
-- 1
-- 2
-- 3
-
-![pontos negativos](../assets/Sprints/S1-negativos.png)
 
 #### O que podemos melhorar?
 
