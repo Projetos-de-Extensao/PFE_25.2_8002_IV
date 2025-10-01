@@ -11,7 +11,7 @@
 | **HU-COORD-001** | **Coordenador** | Eu quero **abrir e fechar o período de inscrição para o Edital de Monitoria**, para **garantir que a seleção de novos monitores siga o cronograma acadêmico**. | Alta |
 | **HU-COORD-002** | **Coordenador** | Eu quero **gerar um relatório consolidado com o desempenho de todos os monitores e horas cumpridas**, para **apresentar à diretoria da faculdade**. | Média |
 
-## scrum
+## Scrum
 
 ### Introdução
 
