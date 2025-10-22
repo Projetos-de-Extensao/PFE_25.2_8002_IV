@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Monitor - Sistema de Monitoria</title>
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f8f9fa;
+            color: #1a1a1a;
+            line-height: 1.5;
+            padding-top: 4rem; 
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        h1 { font-size: 1.875rem; }
+        h2 { font-size: 1.5rem; }
+        h3 { font-size: 1.25rem; font-weight: 600; }
+        h4 { font-size: 1.1rem; }
+        p { font-size: 0.9rem; }
+        
+        .text-muted { 
+            color: #6c757d;
+        }
+        .text-small { font-size: 0.8rem; }
+        .text-xs { font-size: 0.75rem; }
+
+        .app-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1rem;
+            background-color: #fff;
+            border-bottom: 2px solid #e5e7eb;
+            z-index: 100;
+            gap: 1rem;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .ibmec-logo {
+            height: 2.5rem;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .system-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            line-height: 1.2;
+            color: #1a1a1a;
+        }
+        .system-title span {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: #6c757d;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .hamburger-menu {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.75rem;
+            line-height: 1;
+            cursor: pointer;
+            padding: 0.5rem;
+            margin-left: -0.5rem; 
+        }
+
+        .sidebar {
+            display: block;
+            position: fixed;
+            left: -16rem;
+            top: 4rem; 
+            bottom: 0;
+            width: 16rem;
+            background-color: #fff;
+            border-right: 2px solid #e5e7eb;
+            padding: 1rem;
+            z-index: 1000;
+            transition: left 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .sidebar-nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            color: #1a1a1a;
+            font-weight: 500;
+            border-radius: 6px;
+            border: 2px solid transparent;
+            width: 100%;
+            justify-content: flex-start;
+        }
+        .sidebar-nav-item a:hover {
+             background-color: #f3f4f6;
+             border-color: #e5e7eb;
+        }
+        
+        .sidebar-nav-item a svg {
+            width: 1rem;
+            height: 1rem;
+            color: #6c757d;
+        }
+
+        .main-content {
+            padding: 1.5rem 1rem;
+        }
+        
+        .main-content-header {
+            margin-bottom: 1.5rem;
+        }
+        
+        .main-content-header h1 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+        
+        .main-content-header p {
+            color: #6c757d;
+            font-size: 1rem;
+        }
+        
+        .main-content::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        body.sidebar-open .sidebar {
+            left: 0;
+        }
+        body.sidebar-open .main-content::before {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        @media (min-width: 900px) {
+            body {
+                padding-left: 16rem;
+            }
+            
+            .app-header {
+                left: 16rem;
+                padding: 0 1.5rem;
+            }
+            
+            .hamburger-menu {
+                display: none;
+            }
+
+            .sidebar {
+                left: 0;
+            }
+            
+            .main-content {
+                padding: 2rem;
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+            
+            .system-title span {
+                display: block;
+            }
+            
+            .main-content::before {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 899px) {
+            .hamburger-menu {
+                display: block;
+            }
+            .system-title {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .system-title span {
+                display: none;
+            }
+            .header-right {
+                gap: 0;
+            }
+            .user-menu-text, .user-menu-chevron {
+                display: none;
+            }
+        }
+
+        :root {
+            --color-primary: #1a1a1a;
+            --color-primary-fg: #f8f9fa;
+            --color-secondary: #f3f4f6;
+            --color-secondary-fg: #1a1a1a;
+            --color-accent: #0d6efd;
+            --color-accent-border: #b6d4fe;
+            --color-success: #198754;
+            --color-info: #0dcaf0;
+            --color-background: #f8f9fa;
+            --color-card: #ffffff;
+            --color-border: #e5e7eb;
+            --color-input-border: #ced4da;
+            --color-text-muted: #6c757d;
+        }
+
+        .icon {
+            width: 1rem;
+            height: 1rem;
+            stroke-width: 2;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .icon-lg {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+
+        .space-y-6 > * + * {
+            margin-top: 1.5rem;
+        }
+        .space-y-4 > * + * {
+            margin-top: 1rem;
+        }
+        .space-y-3 > * + * {
+            margin-top: 0.75rem;
+        }
+        .space-y-1 > * + * {
+            margin-top: 0.25rem;
+        }
+
+        .grid {
+            display: grid;
+        }
+        .gap-3 { gap: 0.75rem; }
+        .gap-4 { gap: 1rem; }
+        
+        @media (min-width: 768px) {
+            .md-grid-cols-3 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .md-grid-cols-4 {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .card {
+            border-radius: 0.5rem;
+            border: 1px solid var(--color-border);
+            background-color: var(--color-card);
+            color: var(--color-primary);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        }
+        .card-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.375rem;
+            padding: 1.5rem;
+        }
+        .card-content {
+            padding: 1.5rem;
+            padding-top: 0;
+        }
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            line-height: 1;
+            letter-spacing: -0.025em;
+        }
+        .card-description {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+        }
+
+        .stats-card-header {
+            padding-bottom: 0.75rem;
+        }
+        .stats-card-title {
+            font-size: 1.875rem;
+        }
+        .stats-card-content {
+            padding-top: 0;
+        }
+        .border-accent {
+            border-color: var(--color-accent-border);
+        }
+        .text-accent {
+            color: var(--color-accent);
+        }
+
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .justify-center { justify-content: center; }
+        .flex-col { flex-direction: column; }
+        .flex-1 { flex: 1; }
+        .flex-shrink-0 { flex-shrink: 0; }
+        
+        .font-semibold { font-weight: 600; }
+        .font-medium { font-weight: 500; }
+        .font-bold { font-weight: 700; }
+
+        .text-sm { font-size: 0.875rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-3xl { font-size: 1.875rem; }
+        .text-6xl { font-size: 4rem; }
+
+        .p-3 { padding: 0.75rem; }
+        .p-4 { padding: 1rem; }
+        .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mr-2 { margin-right: 0.5rem; }
+        .w-full { width: 100%; }
+        .h-auto { height: auto; }
+        
+        .rounded-lg { border-radius: 0.5rem; }
+        .rounded-md { border-radius: 0.375rem; }
+        .rounded-full { border-radius: 9999px; }
+        
+        .border { border: 1px solid var(--color-border); }
+        .hover-bg-muted:hover {
+            background-color: #f9fafb;
+        }
+        .transition-colors {
+            transition-property: background-color, border-color, color, fill, stroke;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 9999px;
+            padding: 0.125rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .badge-default {
+            background-color: var(--color-primary);
+            color: var(--color-primary-fg);
+        }
+        .badge-secondary {
+            background-color: var(--color-secondary);
+            color: var(--color-secondary-fg);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background-color 0.2s ease-in-out;
+            cursor: pointer;
+            text-decoration: none;
+            height: 2.5rem;
+            padding: 0 1rem;
+        }
+        .btn svg {
+            pointer-events: none;
+            width: 1rem;
+            height: 1rem;
+            flex-shrink: 0;
+        }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: var(--color-primary-fg);
+            border: 1px solid var(--color-primary);
+        }
+        .btn-primary:hover {
+            background-color: rgba(26, 26, 26, 0.9);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--color-input-border);
+            background-color: var(--color-background);
+            color: var(--color-primary);
+        }
+        .btn-outline:hover {
+            background-color: var(--color-secondary);
+        }
+
+        .btn-secondary {
+            background-color: var(--color-secondary);
+            color: var(--color-secondary-fg);
+            border: 1px solid var(--color-secondary);
+        }
+        .btn-secondary:hover {
+            background-color: rgba(243, 244, 246, 0.8);
+        }
+        
+        .btn-ghost {
+            background: none;
+            border: 1px solid transparent;
+            color: var(--color-primary);
+        }
+        .btn-ghost:hover {
+            background-color: var(--color-secondary);
+        }
+        
+        .btn-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            padding: 0;
+        }
+        
+        .btn-sm {
+            height: 2.25rem;
+            padding: 0 0.75rem;
+        }
+        
+        .btn-lg {
+            height: 2.75rem;
+            padding: 0 2rem;
+        }
+        
+        .btn-action-card {
+            height: auto;
+            padding: 1rem;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .btn-action-card svg {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+
+        .relative { position: relative; }
+        .absolute { position: absolute; }
+        .top-1 { top: 0.25rem; }
+        .right-1 { right: 0.25rem; }
+        .h-2 { height: 0.5rem; }
+        .w-2 { width: 0.5rem; }
+        .bg-destructive { background-color: #dc3545; }
+        
+        .avatar {
+            height: 2rem;
+            width: 2rem;
+            border-radius: 9999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .avatar-fallback {
+            background-color: var(--color-primary);
+            color: var(--color-primary-fg);
+        }
+
+        .user-menu-text {
+            text-align: left;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 0.5rem;
+            margin-bottom: -0.5rem;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: var(--color-card);
+            min-width: 14rem;
+            border: 1px solid var(--color-border);
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 1001;
+            padding: 0.5rem 0;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown-label {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--color-text-muted);
+        }
+        .dropdown-separator {
+            height: 1px;
+            background-color: var(--color-border);
+            margin: 0.5rem 0;
+        }
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            color: var(--color-primary);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .dropdown-item:hover {
+            background-color: var(--color-secondary);
+        }
+        .dropdown-item svg {
+            width: 1rem;
+            height: 1rem;
+            color: var(--color-text-muted);
+        }
+
+        .h-10 { height: 2.5rem; }
+        .w-10 { width: 2.5rem; }
+        .bg-primary-10 { background-color: rgba(26, 26, 26, 0.1); }
+        .text-center { text-align: center; }
+
+    </style>
+</head>
+<body>
+
+    <header class="app-header">
+        <div class="header-left">
+            <button class="hamburger-menu">
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+            <img src="https://imgs.search.brave.com/KR-kQc-HcwSCeRhdARghFBBENq_TCf4ZU8Kw-Xun0Iw/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9jZG4u/ZnJlZWJpZXN1cHBs/eS5jb20vbG9nb3Mv/bGFyZ2UvMngvaWJt/ZWMtZWR1Y2FjaW9u/YWwtcy1hLWxvZ28t/cG5nLXRyYW5zcGFy/ZW50LnBuZw" alt="Logo Ibmec" class="ibmec-logo">
+            <div class="system-title">
+                Sistema de Monitoria
+                <span>Monitor</span>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <button class="btn btn-ghost btn-icon relative">
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                <span class="absolute top-1 right-1 h-2 w-2 bg-destructive rounded-full"></span>
+            </button>
+
+            <div class="dropdown">
+                <button class="btn btn-ghost">
+                    <div class="avatar avatar-fallback">AS</div>
+                    <div class="user-menu-text">
+                        <p class="text-sm font-medium">Ana Silva</p>
+                        <p class="text-xs text-muted">Período 2025.2</p>
+                    </div>
+                    <svg class="icon user-menu-chevron text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="dropdown-content">
+                    <div class="dropdown-label">Minha Conta</div>
+                    <div class="dropdown-separator"></div>
+                    <a href="#" class="dropdown-item">
+                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        Configurações
+                    </a>
+                    <div class="dropdown-separator"></div>
+                    <a href="#" class="dropdown-item">
+                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                        Sair
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <aside class="sidebar">
+        <nav class="sidebar-nav">
+            <li class="sidebar-nav-item">
+                <a href="#inicio">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                    Início
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#horarios">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    Horários
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#presenca">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Registrar Presença
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#alunos">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    Alunos
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#impacto">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                    Impacto CR
+                </a>
+            </li>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="main-content-header">
+            <h1>Painel do Monitor</h1>
+            <p class="text-muted">Registre presenças e acompanhe o impacto nos alunos</p>
+        </div>
+        
+        <div class="space-y-6">
+            
+            <div id="inicio" class="space-y-6">
+                <h2>Visão Geral</h2>
+                <div class="grid gap-4 md-grid-cols-4">
+                    <div class="card">
+                        <div class="card-header stats-card-header">
+                            <p class="card-description">Horas este Mês</p>
+                            <h3 class="card-title stats-card-title">24h</h3>
+                        </div>
+                        <div class="card-content stats-card-content">
+                            <div class="text-xs text-muted">Total registrado</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header stats-card-header">
+                            <p class="card-description">Alunos Atendidos</p>
+                            <h3 class="card-title stats-card-title">32</h3>
+                        </div>
+                        <div class="card-content stats-card-content">
+                            <div class="text-xs text-muted">Total no semestre</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header stats-card-header">
+                            <p class="card-description">Horários Esta Semana</p>
+                            <h3 class="card-title stats-card-title">2</h3>
+                        </div>
+                        <div class="card-content stats-card-content">
+                            <div class="text-xs text-muted">Definidos pelo coordenador</div>
+                        </div>
+                    </div>
+                    <div class="card border-accent">
+                        <div class="card-header stats-card-header">
+                            <p class="card-description">Aumento Médio CR</p>
+                            <h3 class="card-title stats-card-title text-accent">+1.2</h3>
+                        </div>
+                        <div class="card-content stats-card-content">
+                            <div class="text-xs text-muted">Dos seus alunos</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="horarios" class="space-y-6">
+                <h2>Próximos Horários</h2>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title flex items-center gap-3">
+                            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            Próximos Horários
+                        </h3>
+                        <p class="card-description">Horários definidos pelo coordenador</p>
+                    </div>
+                    <div class="card-content space-y-4">
+                        
+                        <div class="p-4 border rounded-lg space-y-3 hover-bg-muted transition-colors">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <h4 class="font-semibold">Métodos Quantitativos</h4>
+                                    <p class="text-sm text-muted">Sala 215</p>
+                                </div>
+                                <span class="badge badge-default">Você: Confirmada</span>
+                            </div>
+                            <div class="flex items-center gap-4 text-sm">
+                                <div class="flex items-center gap-3">
+                                    <svg class="icon text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                    <span>Amanhã</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <svg class="icon text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span>13h30 - 15h30</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <svg class="icon text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                                    <span>5 alunos</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline btn-sm w-full">Ver Detalhes</button>
+                        </div>
+                        
+                        <div class="p-4 border rounded-lg space-y-3 hover-bg-muted transition-colors">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <h4 class="font-semibold">Métodos Quantitativos</h4>
+                                    <p class="text-sm text-muted">Sala 215</p>
+                                </div>
+                                <span class="badge badge-secondary">Você: Pendente</span>
+                            </div>
+                            <div class="flex items-center gap-4 text-sm">
+                                <div class="flex items-center gap-3">
+                                    <svg class="icon text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                    <span>Quinta-feira</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <svg class="icon text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span>13h30 - 15h30</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <svg class="icon text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                                    <span>3 alunos</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline btn-sm w-full">Ver Detalhes</button>
+                        </div>
+
+                        <button class="btn btn-primary w-full">
+                            <svg class="icon mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            Ver Todos os Horários
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="presenca" class="space-y-6">
+                <h2>Registrar Presença</h2>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title flex items-center gap-3">
+                            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Registro de Frequência
+                        </h3>
+                        <p class="card-description">Registre a presença dos alunos nas suas monitorias</p>
+                    </div>
+                    <div class="card-content space-y-4">
+                        <p class="text-sm text-muted">Funcionalidade de registro de presença em desenvolvimento.</p>
+                        <button class="btn btn-primary w-full">
+                            <svg class="icon mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Registrar Presença Agora
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="alunos" class="space-y-6">
+                <h2>Meus Alunos</h2>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title flex items-center gap-3">
+                            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                            Atividades Recentes
+                        </h3>
+                        <p class="card-description">Histórico das suas ações</p>
+                    </div>
+                    <div class="card-content space-y-4">
+                        
+                        <div class="flex gap-3 p-3 border rounded-lg">
+                            <div class="h-10 w-10 rounded-full bg-primary-10 flex items-center justify-center flex-shrink-0">
+                                <svg class="icon text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium">Aluno João Silva aumentou CR em +0.5</p>
+                                <p class="text-xs text-muted">2 horas atrás</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex gap-3 p-3 border rounded-lg">
+                            <div class="h-10 w-10 rounded-full bg-primary-10 flex items-center justify-center flex-shrink-0">
+                                <svg class="icon" style="color: var(--color-success);" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium">Frequência registrada - 5 alunos presentes</p>
+                                <p class="text-xs text-muted">1 dia atrás</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3 p-3 border rounded-lg">
+                            <div class="h-10 w-10 rounded-full bg-primary-10 flex items-center justify-center flex-shrink-0">
+                                <svg class="icon" style="color: var(--color-info);" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium">Monitoria realizada - Métodos Quantitativos</p>
+                                <p class="text-xs text-muted">1 dia atrás</p>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-outline w-full">
+                            Ver Histórico Completo
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="impacto" class="space-y-6">
+                <h2>Impacto no CR</h2>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title flex items-center gap-3">
+                            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                            Evolução dos Alunos
+                        </h3>
+                        <p class="card-description">Acompanhe o impacto das suas monitorias no desempenho acadêmico</p>
+                    </div>
+                    <div class="card-content">
+                        <div class="text-center py-8">
+                            <div class="text-6xl font-bold text-accent mb-2">+1.2</div>
+                            <p class="text-sm text-muted">Aumento médio do CR dos seus alunos</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Ações Rápidas</h3>
+                    <p class="card-description">Registre presenças e acompanhe resultados</p>
+                </div>
+                <div class="card-content">
+                    <div class="grid md-grid-cols-3 gap-3">
+                        <button class="btn btn-primary btn-action-card">
+                            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <span>Registrar Presença</span>
+                        </button>
+                        <button class="btn btn-outline btn-action-card">
+                            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            <span>Ver Meus Horários</span>
+                        </button>
+                        <button class="btn btn-outline btn-action-card">
+                            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                            <span>Ver Impacto no CR</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </main>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburgerButton = document.querySelector('.hamburger-menu');
+            const mainContent = document.querySelector('.main-content');
+            const body = document.body;
+
+            hamburgerButton.addEventListener('click', (e) => {
+                e.stopPropagation(); 
+                body.classList.toggle('sidebar-open');
+            });
+
+            mainContent.addEventListener('click', () => {
+                if (body.classList.contains('sidebar-open')) {
+                    body.classList.remove('sidebar-open');
+                }
+            });
+            
+            document.querySelectorAll('.sidebar-nav-item a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const targetId = link.getAttribute('href');
+                    if (targetId.startsWith('#')) {
+                        
+                        const targetElement = document.getElementById(targetId.substring(1));
+                        
+                        if (targetElement) {
+                            
+                            const headerOffset = document.querySelector('.app-header').offsetHeight;
+                            const elementPosition = targetElement.getBoundingClientRect().top;
+                            const offsetPosition = elementPosition + window.pageYOffset - headerOffset - 24; 
+
+                            window.scrollTo({
+                                top: offsetPosition,
+                                behavior: "smooth"
+                            });
+                        }
+                    }
+
+                    if (body.classList.contains('sidebar-open')) {
+                        body.classList.remove('sidebar-open');
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
+
+
