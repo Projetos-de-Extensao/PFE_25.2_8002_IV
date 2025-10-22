@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protótipo - Sistema de Monitoria</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-container {
+            display: flex;
+            width: 100%;
+            max-width: 900px;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+        }
+
+        .login-form {
+            flex: 1;
+            padding: 40px;
+        }
+
+        .login-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1em;
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 24px;
+        }
+        
+        .login-header i {
+            font-size: 1.2em;
+        }
+
+        .login-form h1 {
+            font-size: 1.8em;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .login-form .subtitle {
+            font-size: 1em;
+            color: #777;
+            margin-bottom: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.875em;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            color: #333;
+        }
+        
+        .form-group input::placeholder {
+            color: #aaa;
+        }
+
+        .btn-entrar {
+            width: 100%;
+            padding: 14px;
+            font-size: 1em;
+            font-weight: 600;
+            color: #333;
+            background-color: #f5f5f5;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 24px;
+        }
+
+        .forgot-password a {
+            font-size: 0.875em;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        .quick-access {
+            flex: 1;
+            padding: 40px;
+            background-color: #f9f9f9;
+            border-left: 1px solid #ccc; 
+        }
+        
+        .quick-access h2 {
+            font-size: 1.25em;
+            font-weight: 600;
+        }
+
+        .quick-access .subtitle {
+            font-size: 0.875em;
+            color: #777;
+            margin-bottom: 24px;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .profile-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            text-align: center;
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+            min-height: 120px;
+        }
+
+        .profile-card i {
+            font-size: 2em;
+            color: #555;
+            margin-bottom: 12px;
+        }
+
+        .profile-card span {
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        
+        .register-link {
+            text-align: center;
+            margin-top: 24px;
+            padding: 16px;
+            border: 1px solid #ccc;
+            background-color: #ffffff;
+            font-size: 0.9em;
+        }
+        
+        .register-link a {
+            color: #007bff;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+        
+            .login-container {
+                flex-direction: column;
+                width: 100%;
+                max-width: 100%;
+                min-height: 100vh;
+                border: none;
+            }
+            
+            .login-form, .quick-access {
+                padding: 30px 20px;
+                flex: none;
+            }
+
+            .quick-access {
+                border-left: none;
+                border-top: 1px solid #ccc;
+            }
+            
+            .login-form h1 {
+                font-size: 1.6em;
+            }
+            
+            .profile-grid {
+                gap: 12px;
+            }
+            
+            .profile-card {
+                padding: 16px;
+                min-height: 100px;
+            }
+            
+            .profile-card i {
+                font-size: 1.8em;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        
+        <div class="login-form">
+            <div class="login-header">
+                <i class="fa-solid fa-display"></i>
+                <span>Sistema de Monitoria</span>
+            </div>
+            
+            <h1>Bem-vindo!</h1>
+            <p class="subtitle">Acesse sua conta para continuar</p>
+
+            <form>
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" placeholder="seu.email@instituicao.edu.br">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" placeholder=".........">
+                </div>
+
+                <button type="submit" class="btn-entrar">Entrar</button>
+            </form>
+            
+            <div class="forgot-password">
+                <a href="#">Esqueceu sua senha?</a>
+            </div>
+        </div>
+        
+        <div class="quick-access">
+            <h2>Acesso Rápido</h2>
+            <p class="subtitle">Selecione seu perfil para acessar (demo)</p>
+            
+            <div class="profile-grid">
+                <a href="paineldoaluno.html" class="profile-card">
+                    <i class="fa-solid fa-at"></i>
+                    <span>Aluno</span>
+                </a>
+                
+                <a href="#" class="profile-card">
+                    <i class="fa-solid fa-bookmark"></i>
+                    <span>Monitor</span>
+                </a>
+                
+                <a href="telaprofessores.html" class="profile-card">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>Professor</span>
+                </a>
+                
+                <a href="telacoordenador.html" class="profile-card">
+                    <i class="fa-solid fa-print"></i>
+                    <span>Coordenação</span>
+                </a>
+            </div>
+            
+            <div class="register-link">
+                <span>Primeiro acesso?</span>
+                <a href="#">Cadastre-se aqui</a>
+            </div>
+        </div>
+        
+    </div>
+
+</body>
+</html>
