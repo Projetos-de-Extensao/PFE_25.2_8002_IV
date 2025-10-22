@@ -903,6 +903,7 @@
                 link.addEventListener('click', (e) => {
                     const targetId = link.getAttribute('href');
                     if (targetId.startsWith('#')) {
+                        e.preventDefault(); // ESTA É A CORREÇÃO
                         
                         const targetElement = document.getElementById(targetId.substring(1));
                         
@@ -929,5 +930,6 @@
 
 </body>
 </html>
+
 
 
