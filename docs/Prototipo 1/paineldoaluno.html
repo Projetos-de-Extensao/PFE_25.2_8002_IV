@@ -1,285 +1,855 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel do Aluno - HTML</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        :root {
-            --primary-dark: #003366; /* Kami-sama me de forças eu n lembro o codigo hexa do ibmec */
-            --primary-gold: #FFCC00; 
-        }
-        
-        .bg-primary-dark { background-color: var(--primary-dark); }
-        .text-primary-dark { color: var(--primary-dark); }
-        .bg-primary-gold { background-color: var(--primary-gold); }
-        .text-primary-gold { color: var(--primary-gold); }
-        
-        /* Simulação de cores e variáveis do shadcn/ui */
-        .bg-background { background-color: #f8f8f8; } /* Fundo do Fundo */
-        .bg-card { background-color: #ffffff; } /* Fundo do card */
-        .text-foreground { color: #1f2937; } /* Cor do TEXTO NÃO ALTERA SE NÃO N DA PRA VER NADA! */
-        .text-muted-foreground { color: #6b7280; }
-        .border-border { border-color: #e5e7eb; } 
-        .shadow-card { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1); }
-        .shadow-soft { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1); }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-background);
+    <title>Painel do Aluno - Sistema de Monitoria</title>
+
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
-        .container { 
-            max-width: 1200px; 
-            margin-left: auto;
-            margin-right: auto;
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.5;
+            padding-top: 4rem; /* Espaço para o cabeçalho fixo */
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        h4 {
+            font-size: 1.1rem;
+        }
+        
+        h5 {
+            font-size: 1rem;
+        }
+
+        p {
+            font-size: 0.9rem;
+        }
+
+        .text-muted {
+            color: #777;
+        }
+
+        .text-small {
+            font-size: 0.8rem;
+        }
+        
+        .text-nowrap {
+            white-space: nowrap;
+        }
+
+        /* --- Header --- */
+        .app-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4rem;
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
+            z-index: 100;
+            gap: 1rem;
+        }
+
+        .ibmec-logo {
+            height: 2.25rem;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .system-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-left: auto; /* Empurra para a direita */
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #555; /* Cor mais suave */
+        }
+        .system-title .icon {
+            width: 20px;
+            height: 20px;
+            stroke: #777;
+        }
+
+        .system-title .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            color: #757575;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1px solid #ccc;
+        }
+        .system-title span {
+            display: none; /* Escondido por padrão, mostrado em desktop */
+            font-size: 0.85rem;
+            color: #999;
+        }
+
+        .hamburger-menu {
+            display: none; /* Escondido por padrão em desktop, mostrado em mobile */
+            background: none;
+            border: none;
+            font-size: 1.75rem;
+            line-height: 1;
+            cursor: pointer;
+            padding: 0.5rem;
+            margin-left: -0.5rem;
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            display: block;
+            position: fixed;
+            left: -15rem; /* Escondido por padrão em mobile */
+            top: 4rem;
+            bottom: 0;
+            width: 15rem;
+            background-color: #fff;
+            border-right: 1px solid #eee;
+            padding-top: 1rem;
+            z-index: 1000;
+            transition: left 0.3s ease-in-out;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+        }
+
+        .sidebar-nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .sidebar-nav-item a:hover {
+            background-color: #f4f4f4;
+        }
+
+        .sidebar-nav-item.active a {
+            font-weight: 700;
+            background-color: #f0f0f0;
+        }
+
+        /* --- Main Content --- */
+        .main-content {
+            padding: 1rem;
+        }
+
+        /* Overlay quando sidebar está aberta (mobile) */
+        .main-content::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        /* Classes para o corpo quando a sidebar está aberta */
+        body.sidebar-open .sidebar {
+            left: 0;
+        }
+
+        body.sidebar-open .main-content::before {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* --- Cards e Componentes Gerais --- */
+        .card {
+            background-color: #fff;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .card-header {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            display: flex; /* Para o input de busca */
+            align-items: center;
+            gap: 1rem;
+        }
+        .card-header h4 {
+            margin-bottom: 0;
+            flex-grow: 1;
+        }
+
+        .card-content {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            cursor: pointer;
+            text-decoration: none;
+            border: 1px solid #ccc;
+            background-color: #f5f5f5;
+            color: #333;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .btn:hover {
+            background-color: #e9e9e9;
+        }
+
+        .btn-primary {
+            background-color: #333;
+            color: #fff;
+            border-color: #333;
+        }
+
+        .btn-primary:hover {
+            background-color: #555;
+        }
+        
+        .btn-action {
+            background-color: #f0f0f0;
+            border-color: #e0e0e0;
+            color: #555;
+            padding: 0.6rem 1rem;
+        }
+        .btn-action:hover {
+            background-color: #e0e0e0;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border-radius: 99px;
+            border: 1px solid #ccc;
+            background-color: #f5f5f5;
+            color: #555;
+        }
+        .badge.bg-green {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #bbf7d0; /* green-200 */
+            color: #166534; /* green-800 */
+        }
+        .badge.bg-yellow {
+            background-color: #fefce8; /* yellow-100 */
+            border-color: #fde68a; /* yellow-200 */
+            color: #854d09; /* yellow-800 */
+        }
+        .badge.bg-blue {
+            background-color: #eff6ff; /* blue-100 */
+            border-color: #bfdbfe; /* blue-200 */
+            color: #1e40af; /* blue-800 */
+        }
+
+        /* --- Stats Grid (Visão Geral e Monitorias Disponíveis) --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .stats-grid .card {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .stats-grid .card p { /* Labels */
+            margin-bottom: 0.25rem;
+        }
+
+        .stats-grid .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* --- Search Bar --- */
+        .search-bar {
+            display: flex;
+            gap: 0.5rem;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+        .search-bar input {
+            flex-grow: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+        .search-bar input:focus {
+            border-color: #888;
+        }
+        .search-bar .btn-search {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .search-bar .btn-search:hover {
+            background-color: #555;
+        }
+
+        /* --- Candidatura para Monitor --- */
+        .candidatura-card-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* 3 colunas em mobile, se couber */
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid #eee; /* Separador */
+        }
+        .candidatura-stat {
+            text-align: center;
+        }
+        .candidatura-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+        }
+        .candidatura-stat-label {
+            font-size: 0.8rem;
+            color: #777;
+        }
+
+        .requisitos-list {
+            list-style: none;
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        .requisitos-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        .requisitos-list li:last-child {
+            margin-bottom: 0;
+        }
+        .requisitos-list li .icon-check {
+            color: #16a34a; /* green-600 */
+            font-weight: bold;
+        }
+        .requisitos-list li .icon-x {
+            color: #dc2626; /* red-600 */
+            font-weight: bold;
+        }
+
+        /* Botão para Candidatar-se */
+        .candidatar-btn-container {
+            padding: 1rem;
+            text-align: center;
+        }
+        .candidatar-btn {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            width: 100%;
+            max-width: 300px; /* Limita largura em telas maiores */
+        }
+        .candidatar-btn:hover {
+            background-color: #555;
+        }
+
+        /* --- Disciplinas --- */
+        .disciplina-item {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .disciplina-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        .disciplina-header h4 {
+            margin-bottom: 0;
+        }
+        .disciplina-badges {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .disciplina-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Colunas flexíveis */
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .disciplina-detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+        .disciplina-detail-label {
+            font-size: 0.8rem;
+            color: #777;
+        }
+        .disciplina-detail-value {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        .disciplina-horarios {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .horario-badge {
+            background-color: #f0f0f0;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: #555;
+            border: 1px solid #e0e0e0;
+        }
+        .nota-final {
+            font-weight: bold;
+            color: #333;
+        }
+        .nota-final.aprovado {
+            color: #16a34a; /* green-600 */
+        }
+
+        .aviso-horario-monitor {
+            background-color: #fefce8; /* yellow-100 */
+            border: 1px solid #fde68a; /* yellow-200 */
+            border-radius: 6px;
+            padding: 0.75rem;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: #854d09; /* yellow-800 */
+        }
+
+        /* --- Monitores Disponíveis (dentro da disciplina) --- */
+        .monitores-disciplina-card .card-content {
+            gap: 0.5rem; /* Menor gap para a lista de monitores */
+        }
+        .monitor-disponivel-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .monitor-disponivel-item:last-child {
+            border-bottom: none;
+        }
+        .monitor-info h5 {
+            margin-bottom: 0.2rem;
+        }
+        .monitor-info p {
+            font-size: 0.85rem;
+            color: #777;
+        }
+        .monitor-actions-disciplina {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+
+        /* --- Media Queries (Responsividade) --- */
+        @media (min-width: 600px) {
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .candidatura-card-content {
+                grid-template-columns: repeat(3, 1fr); /* 3 colunas em telas médias */
+            }
+            .disciplina-details-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (min-width: 900px) {
+            body {
+                padding-left: 15rem; /* Espaço para sidebar em desktop */
+            }
+
+            .app-header {
+                left: 15rem; /* Alinha com a sidebar */
+                padding: 0 1.5rem;
+            }
+
+            .hamburger-menu {
+                display: none;
+            }
+
+            .sidebar {
+                left: 0; /* Sidebar visível em desktop */
+            }
+
+            .main-content {
+                padding: 2rem;
+            }
+
+            .system-title {
+                margin-left: 0; /* Remove margin-left: auto */
+            }
+            .system-title span {
+                display: block; /* Mostra o "Aluno" em desktop */
+            }
+
+            .main-content::before {
+                display: none; /* Esconde overlay em desktop */
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+                margin-top: 2rem;
+            }
+
+            .stats-grid .card-title {
+                font-size: 2rem;
+            }
+            .disciplina-details-grid {
+                grid-template-columns: repeat(4, 1fr); /* 4 colunas em desktop */
+            }
+        }
+
+        @media (max-width: 899px) {
+            .hamburger-menu {
+                display: block; /* Hamburger visível em mobile */
+            }
+            .system-title {
+                margin-left: auto; /* Empurra para a direita em mobile */
+            }
+            .system-title .user-avatar {
+                margin-left: 0.5rem; /* Ajuste para avatar */
+            }
         }
     </style>
 </head>
-<body class="min-h-screen">
 
-    <div id="app" class="min-h-screen bg-background font-sans">
-        <!-- injeção java -->
-    </div>
+<body>
 
-    <script>
-        const stats = [
-            { label: "Monitorias Ativas", value: "5", icon: "BookOpen", color: "text-primary-dark" },
-            { label: "Sessões Este Mês", value: "12", icon: "Calendar", color: "text-primary-dark" },
-            { label: "Horas de Estudo", value: "24h", icon: "Clock", color: "text-primary-dark" },
-            { label: "CR Atual", value: "8.7", icon: "TrendingUp", color: "text-green-600" },
-        ];
+    <header class="app-header">
+        <button class="hamburger-menu">☰</button>
 
-        const monitorias = [
-            { disciplina: "Cálculo I", monitor: "Ana Silva", proximo: "Hoje, 14:00", status: "ativo" },
-            { disciplina: "Programação", monitor: "João Santos", proximo: "Amanhã, 10:00", status: "ativo" },
-            { disciplina: "Física I", monitor: "Maria Costa", proximo: "Qui, 16:00", status: "ativo" },
-        ];
+        <img src="https://imgs.search.brave.com/KR-kQc-HcwSCeRhdARghFBBENq_TCf4ZU8Kw-Xun0Iw/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9jZG4u/ZnJlZWJpZXN1cHBs/eS5jb20vbG9nb3Mv/bGFyZ2UvMngvaWJt/ZWMtZWR1Y2FjaW9u/YWwtcy1hLWxvZ28t/cG5nLXRyYW5zcGFy/ZW50LnBuZw"
+            alt="Logo Ibmec" class="ibmec-logo">
 
-        const monitoresDisponiveis = [
-            { nome: "Pedro Oliveira", disciplina: "Álgebra Linear", cr: "9.2", disponibilidade: "Seg/Qua 14h-16h" },
-            { nome: "Lucas Ferreira", disciplina: "Química Geral", cr: "8.9", disponibilidade: "Ter/Qui 15h-17h" },
-        ];
+        <div class="system-title">
+            Sistema de Monitoria
+            <span>Aluno</span>
+            <span class="user-avatar">AL</span>
+        </div>
+    </header>
 
-        const ProximasSessoes = [
-            { dia: "Segunda", data: "15/01", horario: "14:00", disciplina: "Cálculo I" },
-            { dia: "Terça", data: "16/01", horario: "10:00", disciplina: "Programação" },
-            { dia: "Quinta", data: "18/01", horario: "16:00", disciplina: "Física I" },
-        ];
+    <aside class="sidebar">
+        <nav class="sidebar-nav">
+            
+            <li class="sidebar-nav-item active">
+                <a href="#inicio">Início</a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#monitorias-disponiveis">Monitorias Disponíveis</a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#candidatura-monitor">Candidatura para Monitor</a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#minhas-disciplinas">Minhas Disciplinas</a>
+            </li>
+        </nav>
+    </aside>
 
+    <main class="main-content">
 
-        
-        const Icons = {
-            BookOpen: (className = "h-6 w-6") => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${className}"><path d="M2 19.5c6-5.6 12 5.6 18 0" /><path d="M2 12c6-5.6 12 5.6 18 0" /><path d="M2 4.5c6-5.6 12 5.6 18 0" /></svg>`,
-            Calendar: (className = "h-6 w-6") => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${className}"><rect width="18" height="18" x="3" y="4" rx="2" ry="2" /><line x1="16" x2="16" y1="2" y2="6" /><line x1="8" x2="8" y1="2" y2="6" /><line x1="3" x2="21" y1="10" y2="10" /></svg>`,
-            Clock: (className = "h-6 w-6") => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${className}"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>`,
-            TrendingUp: (className = "h-6 w-6") => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${className}"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17" /><polyline points="16 7 22 7 22 13" /></svg>`,
-            Users: (className = "h-4 w-4") => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${className}"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>`,
-        };
-        
-        const IbmecLogo = (className = "h-10 w-auto") => `
-            <div class="flex items-center ${className}">
-                <!-- Bloco Dourado com 'i' -->
-                <div class="flex items-center justify-center h-full w-8 bg-primary-gold p-1">
-                    <span class="font-serif text-white text-3xl font-bold italic leading-none relative bottom-1">i</span>
+        <section id="inicio">
+            <h1>Painel do Aluno</h1>
+            <p class="text-muted">Acompanhe suas monitorias, disciplinas e oportunidades</p>
+        </section>
+
+        <section id="monitorias-disponiveis">
+            <h2>Dashboard de Desempenho</h2>
+            <div class="card">
+                <div class="card-header">
+                    <h4>Suas Estatísticas de Monitoria</h4>
                 </div>
-                <!-- Bloco Azul com 'Ibmec' -->
-                <div class="flex items-center justify-center h-full bg-primary-dark px-4">
-                    <span class="font-serif text-white text-3xl italic font-semibold">Ibmec</span>
+                <div class="card-content">
+                    <div class="stats-grid">
+                        <div class="card">
+                            <p class="text-muted">Monitorias Assistidas</p>
+                            <div class="card-title">3</div>
+                        </div>
+                        <div class="card">
+                            <p class="text-muted">Horas de Monitoria</p>
+                            <div class="card-title">12h</div>
+                        </div>
+                        <div class="card">
+                            <p class="text-muted">Média CR Atual</p>
+                            <div class="card-title">8.5</div>
+                        </div>
+                        <div class="card">
+                            <p class="text-muted">Aumento do CR</p>
+                            <div class="card-title" style="color: #65a30d;">+0.8</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        `;
+        </section>
 
-
-
-        function renderStats() {
-            return stats.map(stat => `
-                <div class="rounded-xl border border-0 bg-card shadow-card relative overflow-hidden transition-all hover:shadow-soft">
-                    <div class="p-6">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm text-muted-foreground">${stat.label}</p>
-                                <p class="mt-2 text-3xl font-bold text-foreground">${stat.value}</p>
-                            </div>
-                            <div class="rounded-full bg-primary-dark/10 p-3 ${stat.color}">
-                                ${Icons[stat.icon]()}
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Linha de destaque com cores Ibmec -->
-                    <div class="absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-primary-dark to-primary-gold"></div>
+        <section id="candidatura-monitor">
+            <h2>Candidatura para Monitor</h2>
+            <div class="card">
+                <div class="card-header">
+                    <h4>Qual o seu status como futuro monitor?</h4>
                 </div>
-            `).join('');
-        }
-
-        function renderMonitorias() {
-            return monitorias.map(monitoria => `
-                <div class="group rounded-xl border border-border bg-gradient-to-br from-white to-primary-dark/5 p-4 transition-all hover:shadow-md">
-                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                        <div class="flex-1">
-                            <div class="flex items-center gap-2">
-                                <h3 class="text-lg font-semibold text-foreground">${monitoria.disciplina}</h3>
-                                <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs transition-colors bg-primary-gold/20 text-primary-dark font-medium">
-                                    Ativo
-                                </span>
-                            </div>
-                            <div class="mt-2 space-y-1 text-sm text-muted-foreground">
-                                <div class="flex items-center gap-2">
-                                    ${Icons.Users("h-4 w-4 text-primary-dark")}
-                                    <span>Monitor: <strong>${monitoria.monitor}</strong></span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    ${Icons.Clock("h-4 w-4 text-primary-dark")}
-                                    <span>Próxima sessão: <strong>${monitoria.proximo}</strong></span>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="bg-primary-dark text-white hover:bg-primary-dark/90 w-full sm:w-auto inline-flex items-center justify-center rounded-md font-semibold transition-colors h-8 px-3 text-xs">
-                            Detalhes
-                        </button>
+                <div class="candidatura-card-content">
+                    <div class="candidatura-stat">
+                        <div class="candidatura-stat-value">8.5</div>
+                        <div class="candidatura-stat-label">Seu CR</div>
+                    </div>
+                    <div class="candidatura-stat">
+                        <div class="candidatura-stat-value">Possui</div>
+                        <div class="candidatura-stat-label">CR Mínimo: 7.0</div>
+                    </div>
+                    <div class="candidatura-stat">
+                        <div class="candidatura-stat-value">12h</div>
+                        <div class="candidatura-stat-label">Experiência</div>
                     </div>
                 </div>
-            `).join('');
-        }
-
-        function renderMonitoresDisponiveis() {
-            return monitoresDisponiveis.map(monitor => `
-                <div class="rounded-xl border border-border bg-card p-4 transition-all hover:shadow-md">
-                    <div class="flex items-start justify-between">
-                        <div class="flex gap-3 w-full">
-                            <!-- Avatar -->
-                            <div class="relative flex h-12 w-12 shrink-0 overflow-hidden rounded-full border border-gray-100">
-                                <div class="flex h-full w-full items-center justify-center rounded-full bg-primary-dark/10 text-primary-dark font-semibold text-lg">
-                                    ${monitor.nome.split(" ").map(n => n[0]).join("")}
-                                </div>
-                            </div>
-                            
-                            <div class="flex-1">
-                                <h3 class="font-semibold text-foreground">${monitor.nome}</h3>
-                                <p class="text-sm text-muted-foreground">${monitor.disciplina}</p>
-                                <div class="mt-2 flex flex-wrap items-center gap-2">
-                                    <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs transition-colors border border-gray-300 text-gray-700 bg-white">
-                                        CR: ${monitor.cr}
-                                    </span>
-                                    <span class="text-xs text-muted-foreground font-medium">${monitor.disponibilidade}</span>
-                                </div>
-                                <button class="mt-3 w-full bg-primary-gold text-primary-dark hover:bg-primary-gold/90 font-bold inline-flex items-center justify-center rounded-md font-semibold transition-colors h-8 px-3 text-xs">
-                                    Solicitar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderProximasSessoes() {
-            return ProximasSessoes.map(sessao => `
-                <div class="rounded-xl border border-border bg-gradient-to-br from-white to-primary-dark/5 p-4 transition-shadow hover:shadow-md">
-                    <div class="mb-3 flex items-center justify-between">
-                        <span class="text-sm font-bold text-primary-dark">${sessao.dia}</span>
-                        <span class="text-xs font-medium text-muted-foreground border border-dashed rounded-md px-2 py-0.5">${sessao.data}</span>
-                    </div>
-                    <p class="text-3xl font-extrabold text-foreground tracking-tight">${sessao.horario}</p>
-                    <p class="mt-1 text-sm text-muted-foreground font-semibold">${sessao.disciplina}</p>
-                    <button class="mt-3 w-full bg-primary-dark text-white hover:bg-primary-dark/90 inline-flex items-center justify-center rounded-md font-semibold transition-colors h-8 px-3 text-xs">
-                        Entrar na Sala
-                    </button>
-                </div>
-            `).join('');
-        }
-
-        function renderDashboard() {
-            const appHtml = `
-                <!-- Header com gradiente -->
-                <div class="relative overflow-hidden bg-gradient-to-br from-primary-dark/5 via-primary-dark/10 to-background pb-24 pt-8">
-                    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6">
-                            
-                            <!-- Logo Ibmec no Header -->
-                            <div class="flex items-center gap-4">
-                                ${IbmecLogo("h-10 w-auto")}
-                            </div>
-
-                            <!-- Informações do Aluno -->
-                            <div class="flex items-center gap-4 mt-4 sm:mt-0">
-                                <!-- Avatar -->
-                                <div class="relative flex h-16 w-16 shrink-0 overflow-hidden rounded-full border-4 border-white shadow-lg">
-                                    <div class="flex h-full w-full items-center justify-center rounded-full bg-primary-dark text-xl text-white">MA</div>
-                                </div>
-
-                                <div>
-                                    <h1 class="text-3xl font-bold text-foreground">Painel do Aluno</h1>
-                                    <p class="text-muted-foreground">Acompanhe suas monitorias e desempenho</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Stats Cards -->
-                <div class="container mx-auto -mt-16 px-4 sm:px-6 lg:px-8">
-                    <div class="mb-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                        ${renderStats()}
-                    </div>
-
-                    <!-- Main Content Grid -->
-                    <div class="grid gap-6 lg:grid-cols-3">
-                        
-                        <!-- Minhas Monitorias (2/3 da largura no desktop) -->
-                        <div class="lg:col-span-2">
-                            <div class="rounded-xl border-0 shadow-card bg-white text-gray-900 shadow-lg">
-                                <div class="border-b border-border p-6">
-                                    <h2 class="text-xl font-semibold text-foreground">Minhas Monitorias</h2>
-                                    <p class="text-sm text-muted-foreground">Acompanhe suas sessões agendadas</p>
-                                </div>
-                                <div class="p-6">
-                                    <div class="space-y-4">
-                                        ${renderMonitorias()}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Monitores Disponíveis (1/3 da largura no desktop) -->
-                        <div class="rounded-xl border-0 shadow-card bg-white text-gray-900 shadow-lg lg:col-span-1">
-                            <div class="border-b border-border p-6">
-                                <h2 class="text-xl font-semibold text-foreground">Monitores Disponíveis</h2>
-                                <p class="text-sm text-muted-foreground">Solicite monitoria com novos monitores</p>
-                            </div>
-                            <div class="p-6">
-                                <div class="space-y-4">
-                                    ${renderMonitoresDisponiveis()}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <ul class="requisitos-list">
+                    <li><span class="icon-check">Preenche</span> Ter concluído a disciplina</li>
+                    <li><span class="icon-check">Preenche</span> Ter cursado a disciplina com aprovação</li>
+                    <li><span class="icon-x">Não Preenche</span> Disponibilidade de 20h/mês</li>
                     
-                    <!-- Próximas Sessões (Embaixo do Minhas Monitorias, ocupa a largura total) -->
-                    <div class="mt-6 rounded-xl border-0 shadow-card bg-white text-gray-900 shadow-lg">
-                        <div class="border-b border-border p-6">
-                            <h2 class="text-xl font-semibold text-foreground">Agenda de Aulas</h2>
-                            <p class="text-sm text-muted-foreground">Confira o seu calendário semanal</p>
-                        </div>
-                        <div class="p-6">
-                            <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                                ${renderProximasSessoes()}
-                            </div>
-                        </div>
+                </ul>
+                <div class="candidatar-btn-container">
+                    <button class="candidatar-btn">Candidatar-se para Monitor</button>
+                </div>
+            </div>
+        </section>
+        
+        <section id="minhas-disciplinas">
+            <h2>Minhas Disciplinas</h2>
+
+            <div class="card disciplina-item">
+                <div class="disciplina-header">
+                    <h4>Métodos Quantitativos</h4>
+                    <div class="disciplina-badges">
+                        <span class="badge bg-green">Aprovado</span>
                     </div>
                 </div>
-                
-                <!-- Espaçador para o rodapé -->
-                <div class="py-10"></div>
-            `;
-            
-            document.getElementById('app').innerHTML = appHtml;
-        }
+                <p class="text-muted text-small">IBM0113</p>
+                <div class="disciplina-horarios">
+                    <span class="horario-badge">Disponível</span>
+                    <span class="horario-badge">Amanhã 08:00</span>
+                </div>
+                <div class="disciplina-details-grid">
+                    <div class="disciplina-detail-item">
+                        <span class="disciplina-detail-label">Horário Aula</span>
+                        <span class="disciplina-detail-value">Ter 08:00 - 09:40</span>
+                    </div>
+                     <div class="disciplina-detail-item">
+                        <span class="disciplina-detail-label">Professor(a)</span>
+                        <span class="disciplina-detail-value">Luís Otávio</span>
+                    </div>
+                    <div class="disciplina-detail-item">
+                        <span class="disciplina-detail-label">Local</span>
+                        <span class="disciplina-detail-value">Bloco - Ibmec</span>
+                    </div>
+                    <div class="disciplina-detail-item">
+                        <span class="disciplina-detail-label">Monitor(a)</span>
+                        <span class="disciplina-detail-value">Ana Silva</span>
+                    </div>
+                    <div class="disciplina-detail-item">
+                        <span class="disciplina-detail-label">Sala</span>
+                        <span class="disciplina-detail-value">Sala 101</span>
+                    </div>
+                    <div class="disciplina-detail-item">
+                        <span class="disciplina-detail-label">Nota Final</span>
+                        <span class="disciplina-detail-value nota-final aprovado">9.5</span>
+                    </div>
+                </div>
+            </div>
 
-        window.onload = renderDashboard;
+            <div class="card disciplina-item">
+                <div class="disciplina-header">
+                    <h4>Programação Orientada a Objetos</h4>
+                    <div class="disciplina-badges">
+                        <span class="badge bg-green">Aprovado</span>
+                    </div>
+                </div>
+                <p class="text-muted text-small">IBM0215</p>
+                <div class="disciplina-horarios">
+                    <span class="horario-badge">Disponível</span>
+                    <span class="horario-badge">Ver Mais</span>
+                </div>
+                <div class="disciplina-details-grid">
+                    <div class="disciplina-detail-item">
+                        <span class="disciplina-detail-label">Horário Aula</span>
+                        <span class="disciplina-detail-value">Ter 10:00 - 11:40</span>
+                    </div>
+                    <div class="disciplina-detail-item">
+                        <span class="disciplina-detail-label">Professor(a)</span>
+                        <span class="disciplina-detail-value">Talita Ribeiro</span>
+                    </div>
+                    <div class="disciplina-detail-item">
+                        <span class="disciplina-detail-label">Local</span>
+                        <span class="disciplina-detail-value">Bloco - Ibmec</span>
+                    </div>
+                    <div class="disciplina-detail-item">
+                        <span class="disciplina-detail-label">Monitor(a)</span>
+                        <span class="disciplina-detail-value">Carlos Santos</span>
+                    </div>
+                    <div class="disciplina-detail-item">
+                        <span class="disciplina-detail-label">Sala</span>
+                        <span class="disciplina-detail-value">Sala 103</span>
+                    </div>
+                    <div class="disciplina-detail-item">
+                        <span class="disciplina-detail-label">Nota Final</span>
+                        <span class="disciplina-detail-value nota-final aprovado">8.8</span>
+                    </div>
+                </div>
+
+            </div>
+
+             <div class="card disciplina-item">
+                <div class="disciplina-header">
+                    <h4>Modelagem Computacional</h4>
+                    <div class="disciplina-badges">
+                        <span class="badge bg-green">Aprovado</span>
+                    </div>
+                </div>
+                <p class="text-muted text-small">IBM0114</p>
+                <div class="disciplina-horarios">
+                    <span class="horario-badge">Disponível</span>
+                    <span class="horario-badge">Quinta 08:00</span>
+                </div>
+                <div class="disciplina-details-grid">
+                    <div class="disciplina-detail-item">
+                        <span class="disciplina-detail-label">Horário Aula</span>
+                        <span class="disciplina-detail-value">Qui 08:00 - 09:40</span>
+                    </div>
+                    <div class="disciplina-detail-item">
+                        <span class="disciplina-detail-label">Professor(a)</span>
+                        <span class="disciplina-detail-value">Danielle Gonçalves</span>
+                    </div>
+                    <div class="disciplina-detail-item">
+                        <span class="disciplina-detail-label">Local</span>
+                        <span class="disciplina-detail-value">Bloco - Ibmec</span>
+                    </div>
+                    <div class="disciplina-detail-item">
+                        <span class="disciplina-detail-label">Monitor(a)</span>
+                        <span class="disciplina-detail-value">Maria Costa</span>
+                    </div>
+                    <div class="disciplina-detail-item">
+                        <span class="disciplina-detail-label">Sala</span>
+                        <span class="disciplina-detail-value">Sala 209</span>
+                    </div>
+                    <div class="disciplina-detail-item">
+                        <span class="disciplina-detail-label">Nota Final</span>
+                        <span class="disciplina-detail-value nota-final aprovado">9.0</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburgerButton = document.querySelector('.hamburger-menu');
+            const mainContent = document.querySelector('.main-content');
+            const body = document.body;
+
+            hamburgerButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                body.classList.toggle('sidebar-open');
+            });
+
+            mainContent.addEventListener('click', () => {
+                if (body.classList.contains('sidebar-open')) {
+                    body.classList.remove('sidebar-open');
+                }
+            });
+
+            document.querySelectorAll('.sidebar-nav-item a').forEach(link => {
+                link.addEventListener('click', () => {
+                    document.querySelectorAll('.sidebar-nav-item').forEach(item => item.classList.remove('active'));
+                    link.parentElement.classList.add('active');
+
+                    if (body.classList.contains('sidebar-open')) {
+                        body.classList.remove('sidebar-open');
+                    }
+                });
+            });
+        });
     </script>
+
 </body>
+
 </html>
