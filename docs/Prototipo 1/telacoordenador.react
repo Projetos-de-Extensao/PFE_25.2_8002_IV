@@ -483,3 +483,226 @@ body.sidebar-open .main-content::before {
     }
 }
 </style>
+
+<body>
+  
+  <div id="root"></div>
+
+    <header class="app-header">
+
+        <button class="hamburger-menu">☰</button>
+
+        <img src="https://imgs.search.brave.com/KR-kQc-HcwSCeRhdARghFBBENq_TCf4ZU8Kw-Xun0Iw/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9jZG4u/ZnJlZWJpZXN1cHBs/eS5jb20vbG9nb3Mv/bGFyZ2UvMngvaWJt/ZWMtZWR1Y2FjaW9u/YWwtcy1hLWxvZ28t/cG5nLXRyYW5zcGFy/ZW50LnBuZw"
+
+            alt="Logo Ibmec" class="ibmec-logo">
+
+
+
+        <div class="system-title-container">
+
+            <div class="system-title-main">Sistema de Monitoria</div>
+
+            <div class="system-title-sub text-muted">Coordenador</div>
+
+        </div>
+
+
+
+        <div class="header-spacer"></div>
+
+
+        <div class="header-right-items">
+
+            <button class="header-icon-btn">
+
+                <span class="material-icons-outlined">notifications</span>
+
+            </button>
+
+            <div class="header-user-profile">
+
+                <div class="user-avatar">G</div>
+
+                <div class="user-details">
+
+                    <span class="user-name">Gianluca Leonardi</span>
+
+                    <span class="user-period text-muted">Período 2025.2</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="system-title">
+
+            Sistema de Monitoria
+
+            <span>Coordenador</span>
+
+        </div>
+
+    </header>
+
+    <aside class="sidebar">
+
+        <nav class="sidebar-nav">
+
+
+
+            <li class="sidebar-nav-item active">
+
+                <a href="link-para-pagina-1.html">
+
+                    <span class="material-icons-outlined">book</span>
+
+                    <span>Início</span>
+
+                </a>
+
+            </li>
+
+            <li class="sidebar-nav-item">
+
+                <a href="link-para-pagina-2.html">
+
+                    <span class="material-icons-outlined">calendar_today</span>
+
+                    <span>Processos Seletivos</span>
+
+                </a>
+
+            </li>
+
+            <li class="sidebar-nav-item">
+
+                <a href="link-para-pagina-3.html">
+
+                    <span class="material-icons-outlined">person_outline</span>
+
+                    <span>Gerenciar Monitores</span>
+
+                </a>
+
+            </li>
+
+            <li class="sidebar-nav-item">
+
+                <a href="link-para-pagina-4.html">
+
+                    <span class="material-icons-outlined">people_outline</span>
+
+                    <span>Gerenciar Usuários</span>
+
+                </a>
+
+            </li>
+
+            <li class="sidebar-nav-item">
+
+                <a href="link-para-pagina-5.html">
+
+                    <span class="material-icons-outlined">article</span>
+
+                    <span>Relatórios Globais</span>
+
+                </a>
+
+            </li>
+
+        </nav>
+
+    </aside>
+
+
+
+    <main class="main-content">
+
+
+
+        <h1>Painel do Coordenador</h1>
+
+
+
+        <div class="stats-grid">
+
+            <div class="card">
+
+                <p class="text-muted">Monitores Ativos</p>
+
+                <div class="card-title">42</div>
+
+            </div>
+
+            <div class="card">
+
+                <p class="text-muted">Candidatos Pendentes</p>
+
+                <div class="card-title">18</div>
+
+            </div>
+
+            <div class="card">
+
+                <p class="text-muted">Processos Abertos</p>
+
+                <div class="card-title">5</div>
+
+            </div>
+
+            <div class="card">
+
+                <p class="text-muted">Professores na Plataforma</p>
+
+                <div class="card-title">27</div>
+
+            </div>
+
+        </div>
+
+
+
+        <h2>Ações Rápidas</h2>
+
+        <div class="quick-actions-grid">
+
+            <a href="#" class="btn btn-primary">
+
+                <span>Criar Novo Processo Seletivo</span>
+
+            </a>
+
+            <a href="#" class="btn">
+
+                <span>Gerar Relatório Geral</span>
+
+            </a>
+
+            <a href="#" class="btn">
+
+                <span>Gerenciar Professores</span>
+
+            </a>
+
+        </div>
+
+        <h2>Atividades Recentes</h2>
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h4>Aprovações Pendentes</h4>
+
+            </div>
+
+            <div class="card-content">
+
+                <p>Não há aprovações pendentes no momento.</p>
+
+            </div>
+
+        </div>
+
+    </main>
