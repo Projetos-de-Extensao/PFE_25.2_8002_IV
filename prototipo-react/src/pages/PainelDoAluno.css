@@ -185,11 +185,11 @@
         }
 
         /* Classes para o corpo quando a sidebar está aberta */
-        body.sidebar-open .sidebar {
+        div.sidebar-open .sidebar {
             left: 0;
         }
 
-        body.sidebar-open .main-content::before {
+        div.sidebar-open .main-content::before {
             opacity: 1;
             pointer-events: auto;
         }
