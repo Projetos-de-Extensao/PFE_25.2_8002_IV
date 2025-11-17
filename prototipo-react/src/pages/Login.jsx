@@ -1,21 +1,51 @@
 import React, { useState } from "react";
 import "./Login.css"; 
 
+function Login() {
+  
+  const [matricula, setMatricula] = useState("");
+  const [senha, setSenha] = useState("");
+  const [error, setError] = useState(null); 
 
-
-  function Login(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Entrar com:", { email, senha });
-   
+    setError(null); 
+
+    try {
+      const response = await fetch('http://localhost:8000/api/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: matricula, 
+          password: senha
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.non_field_errors || 'Dados inválidos');
+      }
+
+      localStorage.setItem('apiToken', data.token);
+      alert("Login bem-sucedido!");
+      console.log("Token:", data.token);
+
+    } catch (err) {
+      console.error(err);
+      setError(err.message);
+    }
+  }; 
 
   return (
     <div className="body-wrapper"> 
       <div className="login-container">
         
-       
         <div className="login-panel">
           <div className="system-logo">
-            <img src={logoSrc} alt="Logo" />
+            {/* <img src={logoSrc} alt="Logo" /> */}
           </div>
 
           <h1>Bem-vindo!</h1>
@@ -23,16 +53,16 @@ import "./Login.css";
 
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="email">
-                E-mail
+              <label htmlFor="matricula">
+                Matrícula
               </label>
               <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                id="matricula"
+                type="text"
+                value={matricula}
+                onChange={(e) => setMatricula(e.target.value)}
                 required
-                placeholder="seu.email@instituicao.edu.br"
+                placeholder="Sua matrícula"
               />
             </div>
 
@@ -50,6 +80,8 @@ import "./Login.css";
               />
             </div>
 
+            {error && <p style={{color: 'red', fontSize: '14px'}}>{error}</p>}
+
             <button
               type="submit"
               className="btn-entrar"
@@ -63,33 +95,27 @@ import "./Login.css";
           </a>
         </div>
 
-
         <div className="quick-access-panel">
           <h2>Acesso Rápido</h2>
           <p>Selecione seu perfil para acessar (demo)</p>
-
           <div className="profiles-grid">
             <a href="paineldoaluno.html" className="profile-card">
               <span className="material-icons">person</span>
               Aluno
             </a>
-
             <a href="paineldoaluno_IDprof.html" className="profile-card">
               <span className="material-icons">book</span>
               Monitor
             </a>
-
             <a href="telaprofessores.html" className="profile-card">
               <span className="material-icons">school</span>
               Professor
             </a>
-
             <a href="telacoordenador (1).html" className="profile-card">
               <span className="material-icons">business_center</span>
               Coordenação
             </a>
           </div>
-
           <a href="#" className="first-access-btn">
             Primeiro acesso? Cadastre-se aqui
           </a>
@@ -98,3 +124,5 @@ import "./Login.css";
     </div>
   );
 }
+
+export default Login;
