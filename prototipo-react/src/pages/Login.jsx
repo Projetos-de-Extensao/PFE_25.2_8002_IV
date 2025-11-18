@@ -1,11 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import "./Login.css"; 
 
 function Login() {
-  
   const [matricula, setMatricula] = useState("");
   const [senha, setSenha] = useState("");
-  const [error, setError] = useState(null); 
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,8 +31,7 @@ function Login() {
       }
 
       localStorage.setItem('apiToken', data.token);
-      alert("Login bem-sucedido!");
-      console.log("Token:", data.token);
+      navigate('/painel-aluno');
 
     } catch (err) {
       console.error(err);
@@ -42,20 +42,15 @@ function Login() {
   return (
     <div className="body-wrapper"> 
       <div className="login-container">
-        
         <div className="login-panel">
           <div className="system-logo">
-            {/* <img src={logoSrc} alt="Logo" /> */}
           </div>
-
           <h1>Bem-vindo!</h1>
           <p>Acesse sua conta para continuar</p>
 
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="matricula">
-                Matrícula
-              </label>
+              <label htmlFor="matricula">Matrícula</label>
               <input
                 id="matricula"
                 type="text"
@@ -65,11 +60,8 @@ function Login() {
                 placeholder="Sua matrícula"
               />
             </div>
-
             <div className="form-group">
-              <label htmlFor="senha">
-                Senha
-              </label>
+              <label htmlFor="senha">Senha</label>
               <input
                 id="senha"
                 type="password"
@@ -79,46 +71,21 @@ function Login() {
                 placeholder="********"
               />
             </div>
-
             {error && <p style={{color: 'red', fontSize: '14px'}}>{error}</p>}
-
-            <button
-              type="submit"
-              className="btn-entrar"
-            >
-              Entrar
-            </button>
+            <button type="submit" className="btn-entrar">Entrar</button>
           </form>
-
-          <a href="#" className="forgot-password">
-            Esqueceu sua senha?
-          </a>
+          <a href="#" className="forgot-password">Esqueceu sua senha?</a>
         </div>
-
         <div className="quick-access-panel">
           <h2>Acesso Rápido</h2>
           <p>Selecione seu perfil para acessar (demo)</p>
           <div className="profiles-grid">
-            <a href="paineldoaluno.html" className="profile-card">
-              <span className="material-icons">person</span>
-              Aluno
-            </a>
-            <a href="paineldoaluno_IDprof.html" className="profile-card">
-              <span className="material-icons">book</span>
-              Monitor
-            </a>
-            <a href="telaprofessores.html" className="profile-card">
-              <span className="material-icons">school</span>
-              Professor
-            </a>
-            <a href="telacoordenador (1).html" className="profile-card">
-              <span className="material-icons">business_center</span>
-              Coordenação
-            </a>
+             <a href="#" className="profile-card"><span className="material-icons">person</span>Aluno</a>
+             <a href="#" className="profile-card"><span className="material-icons">book</span>Monitor</a>
+             <a href="#" className="profile-card"><span className="material-icons">school</span>Professor</a>
+             <a href="#" className="profile-card"><span className="material-icons">business_center</span>Coordenação</a>
           </div>
-          <a href="#" className="first-access-btn">
-            Primeiro acesso? Cadastre-se aqui
-          </a>
+          <a href="#" className="first-access-btn">Primeiro acesso? Cadastre-se aqui</a>
         </div>
       </div>
     </div>
