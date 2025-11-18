@@ -37,21 +37,46 @@ function PainelDoAluno() {
     return (
         <div className={isSidebarOpen ? 'sidebar-open' : ''}>
             <header className="app-header">
-                <button className="hamburger-menu" onClick={toggleSidebar}>☰</button>
+                <button className="hamburger-menu" onClick={toggleSidebar}>
+                    <span className="material-icons">menu</span>
+                </button>
                 <img src="https://imgs.search.brave.com/KR-kQc-HcwSCeRhdARghFBBENq_TCf4ZU8Kw-Xun0Iw/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9jZG4u/ZnJlZWJpZXN1cHBs/eS5jb20vbG9nb3Mv/bGFyZ2UvMngvaWJt/ZWMtZWR1Y2FjaW9u/YWwtcy1hLWxvZ28t/cG5nLXRyYW5zcGFy/ZW50LnBuZw"
                     alt="Logo Ibmec" className="ibmec-logo"/>
                 <div className="system-title">
-                    Sistema de Monitoria<span>Aluno</span><span className="user-avatar">AL</span>
+                    Sistema de Monitoria
+                    <span>Aluno</span>
+                    <span className="user-avatar">AL</span>
                 </div>
             </header>
 
             <aside className="sidebar">
                 <nav className="sidebar-nav">
                     <ul>
-                        <li className="sidebar-nav-item active"><a href="#inicio">Início</a></li>
-                        <li className="sidebar-nav-item"><a href="#monitorias-disponiveis">Monitorias Disponíveis</a></li>
-                        <li className="sidebar-nav-item"><a href="#candidatura-monitor">Candidatura para Monitor</a></li>
-                        <li className="sidebar-nav-item"><a href="#minhas-disciplinas">Minhas Disciplinas</a></li>
+                        {/* AQUI ESTÃO OS ÍCONES ADICIONADOS (PARTE 3) */}
+                        <li className="sidebar-nav-item active">
+                            <a href="#inicio">
+                                <span className="material-icons">home</span>
+                                Início
+                            </a>
+                        </li>
+                        <li className="sidebar-nav-item">
+                            <a href="#monitorias-disponiveis">
+                                <span className="material-icons">search</span>
+                                Monitorias Disponíveis
+                            </a>
+                        </li>
+                        <li className="sidebar-nav-item">
+                            <a href="#candidatura-monitor">
+                                <span className="material-icons">assignment</span>
+                                Candidatura para Monitor
+                            </a>
+                        </li>
+                        <li className="sidebar-nav-item">
+                            <a href="#minhas-disciplinas">
+                                <span className="material-icons">class</span>
+                                Minhas Disciplinas
+                            </a>
+                        </li>
                     </ul>
                 </nav>
             </aside>
