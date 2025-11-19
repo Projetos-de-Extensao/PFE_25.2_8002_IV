@@ -35,6 +35,7 @@ function PainelDoAluno() {
         navigate('/');
     };
 
+    // --- FUNÇÃO AUXILIAR: INPUT COM LIMITE ---
     const handleChangeNota = (e, campo) => {
         let valor = e.target.value;
         if (valor === '') {
@@ -50,6 +51,7 @@ function PainelDoAluno() {
         setDadosAcademicos({ ...dadosAcademicos, [campo]: valor });
     };
 
+    // --- SALVAR DADOS ---
     const handleSalvarDados = async (e) => {
         e.preventDefault();
         setSaving(true);
@@ -75,8 +77,10 @@ function PainelDoAluno() {
         }
     };
 
+    // --- INSCRIÇÃO ---
     const handleInscricao = async (vagaId) => {
         try {
+            // Validação
             const cr = parseFloat(dadosAcademicos.cr_geral);
             const horas = parseInt(dadosAcademicos.horas_cursadas);
             const nota = parseFloat(dadosAcademicos.nota_materia);
@@ -85,6 +89,7 @@ function PainelDoAluno() {
             if (horas < 800) return alert("Requisito não atendido: Você precisa ter no mínimo 800 horas cursadas.");
             if (nota <= 9.0) return alert("Requisito não atendido: Sua nota nesta disciplina deve ser maior que 9.0.");
 
+            // Inscrição
             const { data: { user } } = await supabase.auth.getUser();
             if (!user) return alert("Erro de usuário");
 
@@ -123,7 +128,11 @@ function PainelDoAluno() {
                 if (profile) {
                     setUserRole(profile.role);
                     setUserCurso(profile.curso_slug);
-                    setUserName(profile.first_name ? `${profile.first_name} ${profile.last_name || ''}` : "Aluno");
+                    // Nome seguro para exibição
+                    const primeiroNome = profile.first_name ? profile.first_name.split(' ')[0] : "Aluno";
+                    const ultimoNome = profile.last_name ? profile.last_name.split(' ').pop() : "";
+                    setUserName(`${primeiroNome} ${ultimoNome}`);
+                    
                     setDadosAcademicos({
                         cr_geral: profile.cr_geral || 0,
                         horas_cursadas: profile.horas_cursadas || 0,
@@ -131,7 +140,7 @@ function PainelDoAluno() {
                     });
                 }
 
-                // CORREÇÃO: Buscar Minhas Inscrições com DATA e NOTA
+                // Buscar Minhas Inscrições
                 const { data: minhas } = await supabase.from('inscricoes')
                     .select(`
                         id, status, created_at, nota_disciplina,
@@ -141,11 +150,10 @@ function PainelDoAluno() {
                         )
                     `)
                     .eq('user_id', user.id)
-                    .order('created_at', { ascending: false }); // Mais recentes primeiro
-                    
+                    .order('created_at', { ascending: false });
                 setInscricoes(minhas || []);
 
-                // Buscar Vagas Disponíveis
+                // Buscar Vagas Disponíveis (Filtro de Curso)
                 const { data: vagas } = await supabase.from('vagas')
                     .select(`id, unidade, dia_semana, horario, disciplinas (nome, cursos (slug))`)
                     .eq('status', 'ABERTA');
@@ -171,15 +179,31 @@ function PainelDoAluno() {
 
     return (
         <div className={isSidebarOpen ? 'sidebar-open' : ''}>
+            
+            {/* --- HEADER CORRIGIDO --- */}
             <header className="app-header">
-                <button className="hamburger-menu" onClick={toggleSidebar}><span className="material-icons">menu</span></button>
-                <img src={logo} alt="IBMEC" className="ibmec-logo" />
-                <div className="system-title">
-                    <div style={{display:'flex', flexDirection:'column', alignItems:'flex-end', marginRight:'10px', lineHeight:'1.2'}}>
+                {/* Lado Esquerdo: Menu + Logo + Título */}
+                <div className="header-left">
+                    <button className="hamburger-menu" onClick={toggleSidebar}>
+                        <span className="material-icons">menu</span>
+                    </button>
+                    <img src={logo} alt="IBMEC" className="ibmec-logo" />
+                    <div className="system-title">
                         <strong>Portal do Aluno</strong>
-                        <small style={{fontWeight:'normal', color:'#666', fontSize:'0.8rem'}}>{userName}</small>
                     </div>
-                    <div className="user-avatar">{userName.charAt(0).toUpperCase()}</div>
+                </div>
+
+                {/* Lado Direito: Perfil */}
+                <div className="header-right">
+                    <div className="user-profile">
+                        <div className="user-info">
+                            <span className="user-name">{userName}</span>
+                            <span className="user-role">Acadêmico</span>
+                        </div>
+                        <div className="user-avatar">
+                            {userName.charAt(0).toUpperCase()}
+                        </div>
+                    </div>
                 </div>
             </header>
 
@@ -187,11 +211,19 @@ function PainelDoAluno() {
                 <nav className="sidebar-nav">
                     <ul>
                          <li className="sidebar-nav-item active"><Link to="/painel-aluno"><span className="material-icons">home</span> Início</Link></li>
+                         
                          {userRole === 'coord' && (
-                             <li className="sidebar-nav-item"><Link to="/painel-coordenador" style={{color: '#d97706', fontWeight: 'bold'}}><span className="material-icons">business_center</span> Depto CASA</Link></li>
+                             <li className="sidebar-nav-item">
+                                <Link to="/painel-coordenador" style={{color: '#d97706', fontWeight: 'bold'}}>
+                                    <span className="material-icons">business_center</span> Depto CASA
+                                </Link>
+                             </li>
                          )}
+                         
                          <li className="sidebar-nav-item" style={{marginTop: '2rem', borderTop: '1px solid #eee', paddingTop: '1rem'}}>
-                             <a href="#" onClick={handleLogout} style={{color: '#dc2626'}}><span className="material-icons">logout</span> Sair</a>
+                             <a href="#" onClick={handleLogout} style={{color: '#dc2626'}}>
+                                <span className="material-icons">logout</span> Sair
+                             </a>
                          </li>
                     </ul>
                 </nav>
@@ -213,25 +245,58 @@ function PainelDoAluno() {
                     </div>
                 </div>
 
+                {/* --- DADOS ACADÊMICOS --- */}
                 <div className="card" style={{borderLeft: '5px solid #2563eb'}}>
-                    <div className="card-header"><h4>Meus Dados Acadêmicos</h4></div>
+                    <div className="card-header">
+                        <h4>Meus Dados Acadêmicos</h4>
+                        <span className="text-muted text-small">Obrigatório para candidaturas</span>
+                    </div>
                     <form onSubmit={handleSalvarDados} style={{display: 'flex', gap: '15px', alignItems: 'flex-end', flexWrap: 'wrap'}}>
+                        
                         <div style={{flex: 1, minWidth: '150px'}}>
                             <label style={{display:'block', marginBottom:'5px', fontWeight:'600', fontSize:'0.9rem'}}>CR Geral</label>
-                            <input type="number" step="0.01" min="0" max="10" className="form-control" style={{width:'100%', padding:'10px', borderRadius:'8px', border:'1px solid #ccc'}} value={dadosAcademicos.cr_geral} onChange={(e) => handleChangeNota(e, 'cr_geral')} placeholder="Ex: 8.5" />
+                            <input 
+                                type="number" step="0.01" min="0" max="10" className="form-control"
+                                style={{width:'100%', padding:'10px', borderRadius:'8px', border:'1px solid #ccc'}}
+                                value={dadosAcademicos.cr_geral} onChange={(e) => handleChangeNota(e, 'cr_geral')}
+                                placeholder="Ex: 8.5"
+                            />
                         </div>
+
                         <div style={{flex: 1, minWidth: '150px'}}>
                             <label style={{display:'block', marginBottom:'5px', fontWeight:'600', fontSize:'0.9rem'}}>Horas Cursadas</label>
-                            <input type="number" min="0" className="form-control" style={{width:'100%', padding:'10px', borderRadius:'8px', border:'1px solid #ccc'}} value={dadosAcademicos.horas_cursadas} onChange={(e) => setDadosAcademicos({...dadosAcademicos, horas_cursadas: e.target.value})} placeholder="Ex: 850" />
+                            <input 
+                                type="number" min="0" className="form-control"
+                                style={{width:'100%', padding:'10px', borderRadius:'8px', border:'1px solid #ccc'}}
+                                value={dadosAcademicos.horas_cursadas} onChange={(e) => setDadosAcademicos({...dadosAcademicos, horas_cursadas: e.target.value})}
+                                placeholder="Ex: 850"
+                            />
                         </div>
+
                         <div style={{flex: 1, minWidth: '150px'}}>
                             <label style={{display:'block', marginBottom:'5px', fontWeight:'600', fontSize:'0.9rem', color:'#2563eb'}}>Nota na Matéria</label>
-                            <input type="number" step="0.1" min="0" max="10" className="form-control" style={{width:'100%', padding:'10px', borderRadius:'8px', border:'2px solid #2563eb', backgroundColor:'#f0f9ff'}} value={dadosAcademicos.nota_materia} onChange={(e) => handleChangeNota(e, 'nota_materia')} placeholder="Ex: 9.5" />
+                            <input 
+                                type="number" step="0.1" min="0" max="10" className="form-control"
+                                style={{width:'100%', padding:'10px', borderRadius:'8px', border:'2px solid #2563eb', backgroundColor:'#f0f9ff'}}
+                                value={dadosAcademicos.nota_materia} onChange={(e) => handleChangeNota(e, 'nota_materia')}
+                                placeholder="Ex: 9.5"
+                            />
                         </div>
-                        <button type="submit" className="btn btn-primary" style={{height: '45px', minWidth:'100px'}}>{saving ? '...' : 'Salvar'}</button>
+
+                        <button type="submit" className="btn btn-primary" style={{height: '45px', minWidth:'100px'}}>
+                            {saving ? '...' : 'Salvar'}
+                        </button>
                     </form>
+                    
+                    <div style={{marginTop: '15px', padding:'10px', backgroundColor:'#f8fafc', borderRadius:'8px', fontSize: '0.85rem', color: '#555', border:'1px dashed #ccc'}}>
+                        <strong>Requisitos Obrigatórios:</strong><br/>
+                        • CR Geral &ge; 8.0 <br/>
+                        • Horas Cursadas &ge; 800 <br/>
+                        • Nota na Matéria Alvo &gt; 9.0 (Atualize este campo conforme a vaga que deseja!)
+                    </div>
                 </div>
 
+                {/* AGENDA */}
                 {minhasMonitoriasAtivas.length > 0 && (
                     <>
                         <h2>Minha Agenda</h2>
@@ -256,11 +321,19 @@ function PainelDoAluno() {
                     </>
                 )}
 
-                <h2>Oportunidades na sua Área</h2>
+                {/* OPORTUNIDADES */}
+                <h2>Oportunidades na sua Área ({userCurso})</h2>
                 <div className="card">
                     <div className="card-content">
                         {loading && <p>Carregando...</p>}
-                        {!loading && vagasDisponiveis.length === 0 && <p>Nenhuma vaga disponível para o seu curso.</p>}
+                        
+                        {!loading && vagasDisponiveis.length === 0 && (
+                            <div style={{textAlign:'center', padding:'1rem'}}>
+                                <span className="material-icons" style={{fontSize:'3rem', color:'#ccc'}}>block</span>
+                                <p>Nenhuma vaga disponível para o seu curso no momento.</p>
+                            </div>
+                        )}
+                        
                         {vagasDisponiveis.map(vaga => {
                             const jaInscrito = inscricoes.some(i => i.vagas?.id === vaga.id);
                             return (
@@ -269,14 +342,20 @@ function PainelDoAluno() {
                                         <h5 style={{fontWeight:'bold'}}>{vaga.disciplinas?.nome}</h5>
                                         <p className="text-muted">{vaga.unidade} • {vaga.dia_semana} • {vaga.horario}</p>
                                     </div>
-                                    {jaInscrito ? <span className="badge bg-yellow">Inscrito</span> : <button className="btn btn-primary" onClick={() => handleInscricao(vaga.id)}>Inscrever-se</button>}
+                                    {jaInscrito ? (
+                                        <span className="badge bg-yellow">Inscrito</span>
+                                    ) : (
+                                        <button className="btn btn-primary" onClick={() => handleInscricao(vaga.id)}>
+                                            Inscrever-se
+                                        </button>
+                                    )}
                                 </div>
                             );
                         })}
                     </div>
                 </div>
 
-                {/* --- HISTÓRICO CORRIGIDO --- */}
+                {/* HISTÓRICO CORRIGIDO E DETALHADO */}
                 <h2>Histórico de Candidaturas</h2>
                 <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem'}}>
                     {inscricoes.map(i => (

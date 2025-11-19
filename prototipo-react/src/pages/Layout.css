@@ -1,5 +1,8 @@
+/* src/pages/Layout.css - Versão Estável */
+
 :root {
-    --primary-color: #003366;    
+    --primary-color: #003366;     /* Azul IBMEC */
+    --primary-light: #2563eb;
     --bg-color: #f4f7fe;
     --text-dark: #0f172a;
     --text-muted: #64748b;
@@ -11,7 +14,7 @@
 body {
     background-color: var(--bg-color);
     color: var(--text-dark);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     min-height: 100vh;
 }
 
@@ -21,15 +24,20 @@ h2 { font-size: 1.3rem; margin: 2rem 0 1rem; color: var(--primary-color); border
 p { line-height: 1.6; color: var(--text-muted); font-size: 0.9rem; }
 .text-muted { color: var(--text-muted); }
 
-/* --- HEADER --- */
+/* --- HEADER (ESTRUTURA FLEX) --- */
 .app-header {
     position: fixed; top: 0; left: 0; right: 0; height: 70px;
     background: white; border-bottom: 1px solid var(--border-color);
-    display: flex; align-items: center; padding: 0 2rem;
-    z-index: 50; justify-content: space-between;
+    display: flex; align-items: center; justify-content: space-between; /* SEPARA ESQUERDA E DIREITA */
+    padding: 0 2rem;
+    z-index: 50;
 }
 
-.header-left { display: flex; align-items: center; gap: 1rem; }
+/* Lado Esquerdo: Menu + Logo + Título */
+.header-left { 
+    display: flex; align-items: center; gap: 1rem; 
+}
+
 .ibmec-logo { height: 35px; object-fit: contain; }
 
 .system-title {
@@ -38,19 +46,26 @@ p { line-height: 1.6; color: var(--text-muted); font-size: 0.9rem; }
 .system-title strong { font-size: 1rem; color: var(--primary-color); }
 .system-title small { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
 
-/* Header Right (Perfil e Notificações) */
-.header-right { display: flex; align-items: center; gap: 1.5rem; }
-
-.btn-icon {
-    background: none; border: none; cursor: pointer;
-    color: var(--text-muted); display: flex; align-items: center;
+/* Lado Direito: Perfil */
+.header-right { 
+    display: flex; align-items: center; gap: 1.5rem; 
 }
-.btn-icon:hover { color: var(--primary-color); }
 
-.user-profile { display: flex; align-items: center; gap: 10px; text-align: right; }
-.user-info { display: flex; flex-direction: column; }
-.user-name { font-size: 0.9rem; font-weight: 600; color: var(--text-dark); }
-.user-role { font-size: 0.75rem; color: var(--text-muted); }
+.user-profile { 
+    display: flex; align-items: center; gap: 12px; 
+}
+
+.user-info { 
+    display: flex; flex-direction: column; text-align: right; 
+}
+
+.user-name { 
+    font-size: 0.9rem; font-weight: 600; color: var(--text-dark); 
+}
+
+.user-role { 
+    font-size: 0.75rem; color: var(--text-muted); 
+}
 
 .user-avatar {
     width: 40px; height: 40px; background: var(--primary-color); color: white;
@@ -66,7 +81,6 @@ p { line-height: 1.6; color: var(--text-muted); font-size: 0.9rem; }
     background: white; border-right: 1px solid var(--border-color);
     padding-top: 1.5rem; z-index: 40; transition: transform 0.3s ease;
 }
-
 .sidebar-nav ul { list-style: none; padding: 0; }
 .sidebar-nav-item a {
     display: flex; align-items: center; gap: 12px;
@@ -82,49 +96,40 @@ p { line-height: 1.6; color: var(--text-muted); font-size: 0.9rem; }
     margin-left: 260px; margin-top: 70px; padding: 2rem;
 }
 
-/* --- CARDS & STATS --- */
+/* --- CARDS --- */
+.card {
+    background: white; border-radius: 12px; padding: 1.5rem;
+    border: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    margin-bottom: 1.5rem;
+}
 .stats-grid {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1.5rem; margin-bottom: 2rem;
 }
-.card {
-    background: white; border-radius: 12px; padding: 1.5rem;
-    border: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-}
 .stats-grid .card { text-align: center; padding: 2rem; }
 .card-title { font-size: 2.5rem; font-weight: 700; color: var(--primary-color); margin-top: 0.5rem; }
 
-/* --- QUICK ACTIONS (Novos Botões) --- */
-.quick-actions-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1rem; margin-bottom: 2rem;
-}
-
-.btn-quick {
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    padding: 1.2rem; background: white; border: 1px solid var(--border-color);
-    border-radius: 10px; color: var(--primary-color); font-weight: 600;
-    text-decoration: none; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-}
-.btn-quick:hover {
-    background: var(--primary-color); color: white; transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 51, 102, 0.2);
-}
-.btn-quick.primary { background: var(--primary-color); color: white; }
-.btn-quick.primary:hover { background: #002244; }
-
-/* --- TABELAS E LISTAS --- */
+/* --- LISTAS E ITENS --- */
 .card-header { 
     display: flex; justify-content: space-between; align-items: center; 
     margin-bottom: 1rem; border-bottom: 1px solid #f1f5f9; padding-bottom: 1rem; 
 }
-.monitor-item { 
-    display: flex; justify-content: space-between; align-items: center; 
+.monitor-item, .disciplina-item { 
     padding: 1rem 0; border-bottom: 1px solid #f1f5f9; 
 }
 .monitor-item:last-child { border-bottom: none; }
+.monitor-info h5 { margin: 0 0 0.3rem 0; font-size: 1rem; color: #334155; }
 
-/* RESPONSIVIDADE */
+/* --- COMPONENTES --- */
+.btn { padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; font-size: 0.9rem; text-decoration: none; display: inline-block; }
+.btn-primary { background: var(--primary-color); color: white; }
+.btn-action { background: white; border: 1px solid #cbd5e1; color: #475569; }
+.badge { padding: 0.35rem 0.75rem; border-radius: 99px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+.bg-green { background: #dcfce7; color: #166534; }
+.bg-yellow { background: #fef9c3; color: #854d09; }
+.bg-red { background: #fee2e2; color: #991b1b; }
+
+/* --- RESPONSIVIDADE --- */
 @media (max-width: 900px) {
     .sidebar { transform: translateX(-100%); }
     .sidebar-open .sidebar { transform: translateX(0); box-shadow: 10px 0 20px rgba(0,0,0,0.1); }
@@ -132,7 +137,6 @@ p { line-height: 1.6; color: var(--text-muted); font-size: 0.9rem; }
     .hamburger-menu { display: block; }
     .user-info { display: none; } /* Esconde nome no mobile */
     
-    /* Overlay */
     .sidebar-open::before {
         content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
         background: rgba(0,0,0,0.5); z-index: 30;
