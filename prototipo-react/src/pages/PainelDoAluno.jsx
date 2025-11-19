@@ -35,21 +35,19 @@ function PainelDoAluno() {
         navigate('/');
     };
 
-    // --- FUNÇÃO AUXILIAR: MUDANÇA COM LIMITE 10 ---
+    // --- FUNÇÃO AUXILIAR: INPUT COM LIMITE ---
     const handleChangeNota = (e, campo) => {
         let valor = e.target.value;
         if (valor === '') {
             setDadosAcademicos({ ...dadosAcademicos, [campo]: '' });
             return;
         }
-        // Converte para número para verificar o limite
         const numero = parseFloat(valor);
         if (numero > 10) {
             alert("O valor máximo permitido é 10.");
             valor = 10;
         }
         if (numero < 0) valor = 0;
-
         setDadosAcademicos({ ...dadosAcademicos, [campo]: valor });
     };
 
@@ -82,23 +80,16 @@ function PainelDoAluno() {
     // --- INSCRIÇÃO ---
     const handleInscricao = async (vagaId) => {
         try {
-            // 1. Validação de Requisitos
+            // Validação
             const cr = parseFloat(dadosAcademicos.cr_geral);
             const horas = parseInt(dadosAcademicos.horas_cursadas);
             const nota = parseFloat(dadosAcademicos.nota_materia);
 
-            // MUDANÇA AQUI: Agora aceita >= 8.0
-            if (cr < 8.0) {
-                return alert("Requisito não atendido: Seu CR Geral deve ser maior ou igual a 8.0.");
-            }
-            if (horas < 800) {
-                return alert("Requisito não atendido: Você precisa ter no mínimo 800 horas cursadas.");
-            }
-            if (nota <= 9.0) {
-                return alert("Requisito não atendido: Sua nota nesta disciplina deve ser maior que 9.0.");
-            }
+            if (cr < 8.0) return alert("Requisito não atendido: Seu CR Geral deve ser maior ou igual a 8.0.");
+            if (horas < 800) return alert("Requisito não atendido: Você precisa ter no mínimo 800 horas cursadas.");
+            if (nota <= 9.0) return alert("Requisito não atendido: Sua nota nesta disciplina deve ser maior que 9.0.");
 
-            // 2. Inscrição
+            // Inscrição
             const { data: { user } } = await supabase.auth.getUser();
             if (!user) return alert("Erro de usuário");
 
@@ -145,7 +136,7 @@ function PainelDoAluno() {
                     });
                 }
 
-                // Buscar Inscrições
+                // Buscar Minhas Inscrições
                 const { data: minhas } = await supabase.from('inscricoes')
                     .select(`id, status, vagas ( id, unidade, dia_semana, horario, disciplinas (nome) )`)
                     .eq('user_id', user.id);
@@ -177,15 +168,33 @@ function PainelDoAluno() {
 
     return (
         <div className={isSidebarOpen ? 'sidebar-open' : ''}>
+            
+            {/* --- HEADER CORRIGIDO E PADRONIZADO --- */}
             <header className="app-header">
-                <button className="hamburger-menu" onClick={toggleSidebar}><span className="material-icons">menu</span></button>
-                <img src={logo} alt="IBMEC" className="ibmec-logo" />
-                <div className="system-title">
-                    <div style={{display:'flex', flexDirection:'column', alignItems:'flex-end', marginRight:'10px', lineHeight:'1.2'}}>
+                <div className="header-left" style={{display:'flex', alignItems:'center', gap:'1rem'}}>
+                    <button className="hamburger-menu" onClick={toggleSidebar}>
+                        <span className="material-icons">menu</span>
+                    </button>
+                    <img src={logo} alt="IBMEC" className="ibmec-logo" />
+                    <div className="system-title">
                         <strong>Portal do Aluno</strong>
-                        <small style={{fontWeight:'normal', color:'#666', fontSize:'0.8rem'}}>{userName}</small>
                     </div>
-                    <div className="user-avatar">{userName.charAt(0).toUpperCase()}</div>
+                </div>
+
+                <div className="header-right">
+                    <div className="user-profile">
+                        <div className="user-info" style={{textAlign: 'right'}}>
+                            <span className="user-name" style={{fontWeight: 'bold', fontSize:'0.9rem', display:'block'}}>
+                                {userName}
+                            </span>
+                            <span className="user-role" style={{fontSize:'0.75rem', color:'#666'}}>
+                                Acadêmico
+                            </span>
+                        </div>
+                        <div className="user-avatar">
+                            {userName.charAt(0).toUpperCase()}
+                        </div>
+                    </div>
                 </div>
             </header>
 
@@ -193,12 +202,20 @@ function PainelDoAluno() {
                 <nav className="sidebar-nav">
                     <ul>
                          <li className="sidebar-nav-item active"><Link to="/painel-aluno"><span className="material-icons">home</span> Início</Link></li>
-                         <li className="sidebar-nav-item"><Link to="/painel-monitor"><span className="material-icons">book</span> Área Monitor</Link></li>
+                         
+                         {/* Depto CASA só aparece para Coordenadores */}
                          {userRole === 'coord' && (
-                             <li className="sidebar-nav-item"><Link to="/painel-coordenador" style={{color: '#d97706', fontWeight: 'bold'}}><span className="material-icons">business_center</span> Depto CASA</Link></li>
+                             <li className="sidebar-nav-item">
+                                <Link to="/painel-coordenador" style={{color: '#d97706', fontWeight: 'bold'}}>
+                                    <span className="material-icons">business_center</span> Depto CASA
+                                </Link>
+                             </li>
                          )}
+                         
                          <li className="sidebar-nav-item" style={{marginTop: '2rem', borderTop: '1px solid #eee', paddingTop: '1rem'}}>
-                             <a href="#" onClick={handleLogout} style={{color: '#dc2626'}}><span className="material-icons">logout</span> Sair</a>
+                             <a href="#" onClick={handleLogout} style={{color: '#dc2626'}}>
+                                <span className="material-icons">logout</span> Sair
+                             </a>
                          </li>
                     </ul>
                 </nav>
@@ -220,22 +237,20 @@ function PainelDoAluno() {
                     </div>
                 </div>
 
-                {/* --- CARD DE DADOS ACADÊMICOS --- */}
+                {/* --- DADOS ACADÊMICOS --- */}
                 <div className="card" style={{borderLeft: '5px solid #2563eb'}}>
                     <div className="card-header">
                         <h4>Meus Dados Acadêmicos</h4>
-                        <span className="text-muted text-small">Mantenha atualizado para se candidatar</span>
+                        <span className="text-muted text-small">Obrigatório para candidaturas</span>
                     </div>
                     <form onSubmit={handleSalvarDados} style={{display: 'flex', gap: '15px', alignItems: 'flex-end', flexWrap: 'wrap'}}>
                         
                         <div style={{flex: 1, minWidth: '150px'}}>
                             <label style={{display:'block', marginBottom:'5px', fontWeight:'600', fontSize:'0.9rem'}}>CR Geral</label>
                             <input 
-                                type="number" step="0.01" min="0" max="10"
-                                className="form-control"
+                                type="number" step="0.01" min="0" max="10" className="form-control"
                                 style={{width:'100%', padding:'10px', borderRadius:'8px', border:'1px solid #ccc'}}
-                                value={dadosAcademicos.cr_geral}
-                                onChange={(e) => handleChangeNota(e, 'cr_geral')} // Usa a função com limite
+                                value={dadosAcademicos.cr_geral} onChange={(e) => handleChangeNota(e, 'cr_geral')}
                                 placeholder="Ex: 8.5"
                             />
                         </div>
@@ -243,11 +258,9 @@ function PainelDoAluno() {
                         <div style={{flex: 1, minWidth: '150px'}}>
                             <label style={{display:'block', marginBottom:'5px', fontWeight:'600', fontSize:'0.9rem'}}>Horas Cursadas</label>
                             <input 
-                                type="number" min="0"
-                                className="form-control"
+                                type="number" min="0" className="form-control"
                                 style={{width:'100%', padding:'10px', borderRadius:'8px', border:'1px solid #ccc'}}
-                                value={dadosAcademicos.horas_cursadas}
-                                onChange={(e) => setDadosAcademicos({...dadosAcademicos, horas_cursadas: e.target.value})}
+                                value={dadosAcademicos.horas_cursadas} onChange={(e) => setDadosAcademicos({...dadosAcademicos, horas_cursadas: e.target.value})}
                                 placeholder="Ex: 850"
                             />
                         </div>
@@ -255,11 +268,9 @@ function PainelDoAluno() {
                         <div style={{flex: 1, minWidth: '150px'}}>
                             <label style={{display:'block', marginBottom:'5px', fontWeight:'600', fontSize:'0.9rem', color:'#2563eb'}}>Nota na Matéria</label>
                             <input 
-                                type="number" step="0.1" min="0" max="10"
-                                className="form-control"
+                                type="number" step="0.1" min="0" max="10" className="form-control"
                                 style={{width:'100%', padding:'10px', borderRadius:'8px', border:'2px solid #2563eb', backgroundColor:'#f0f9ff'}}
-                                value={dadosAcademicos.nota_materia}
-                                onChange={(e) => handleChangeNota(e, 'nota_materia')} // Usa a função com limite
+                                value={dadosAcademicos.nota_materia} onChange={(e) => handleChangeNota(e, 'nota_materia')}
                                 placeholder="Ex: 9.5"
                             />
                         </div>
@@ -268,13 +279,6 @@ function PainelDoAluno() {
                             {saving ? '...' : 'Salvar'}
                         </button>
                     </form>
-                    
-                    <div style={{marginTop: '15px', padding:'10px', backgroundColor:'#f8fafc', borderRadius:'8px', fontSize: '0.85rem', color: '#555', border:'1px dashed #ccc'}}>
-                        <strong>Requisitos Obrigatórios:</strong><br/>
-                        • CR Geral &ge; 8.0 <br/>
-                        • Horas Cursadas &ge; 800 <br/>
-                        • Nota na Matéria Alvo &gt; 9.0 (Atualize este campo conforme a vaga que deseja!)
-                    </div>
                 </div>
 
                 {/* AGENDA */}
@@ -307,7 +311,6 @@ function PainelDoAluno() {
                 <div className="card">
                     <div className="card-content">
                         {loading && <p>Carregando...</p>}
-                        
                         {!loading && vagasDisponiveis.length === 0 && (
                             <div style={{textAlign:'center', padding:'1rem'}}>
                                 <span className="material-icons" style={{fontSize:'3rem', color:'#ccc'}}>block</span>
@@ -336,7 +339,7 @@ function PainelDoAluno() {
                     </div>
                 </div>
 
-                <h2>Histórico de Candidaturas</h2>
+                <h2>Histórico</h2>
                 {inscricoes.map(i => (
                     <div className="card disciplina-item" key={i.id}>
                         <div className="card-header">
