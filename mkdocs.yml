@@ -107,23 +107,24 @@ theme:
         name: Switch to system preference
 # Estrutura de navegação (Menu lateral)
 nav:
-   Home: index.md
-   Documentação do Projeto:
-      - Visão Geral: docs/visao-geral.md # Novo arquivo
-      - Requisitos e Funcionalidades: docs/funcionalidades.md # Novo arquivo
-      - Modelo de Dados: docs/modelo-dados.md # Novo arquivo
-   Instalação e Configuração:
-      - Ambiente de Desenvolvimento: docs/ambiente.md # Novo arquivo
-      - Como Rodar o Projeto: docs/como-rodar.md # Novo arquivo
-   Referências da Disciplina:
+  - Home: index.md
+  - Documentação do Projeto:
+      - Visão Geral: docs/visaogeral.md
+      - Funcionalidades: docs/funcionalidades.md
+      - Modelo de Dados: docs/modelo-dados.md
+  - Instalação e Configuração:
+      - Ambiente: docs/ambiente.md
+      - Como Rodar: docs/como-rodar.md
+  - Referências da Disciplina:
       - Aulas: Disciplina/Aulas.md
-      - GitHub: github.md
+      - Github: github.md
       - Mkdocs: mkdocs.md
       - CodeSpace: Codespace.md
-   Tópicos de React (Referência):
+  - Tópicos de React (Referência):
       - Introdução: React/01_Intro.md
       - Componentes: React/Componentes.md
       - Hooks: React/Hooks.md
       - Context API: React/ContextAPI.md
       - React Router: React/ReactRouter.md
       - Redux: React/Redux.md
+      
