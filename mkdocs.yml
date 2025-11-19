@@ -108,10 +108,22 @@ theme:
 # Estrutura de navegação (Menu lateral)
 nav:
   - Home: index.md
-  - Documentação:
-      - 'Visão Geral': docs/visaogeral.md
-      - 'Funcionalidades': docs/funcionalidades.md
-      - 'Modelo de Dados': docs/modelo-dados.md
-  - Instalação:
-      - 'Ambiente': docs/ambiente.md
-      - 'Como Rodar': docs/como-rodar.md
+  - Documentação do Projeto:
+      - Visão Geral: docs/visaogeral.md
+      - Funcionalidades: docs/funcionalidades.md
+      - Modelo de Dados: docs/modelo-dados.md
+  - Instalação e Configuração:
+      - Ambiente: docs/ambiente.md
+      - Como Rodar: docs/como-rodar.md
+  - Referências da Disciplina:
+      - Aulas: Disciplina/Aulas.md
+      - Github: github.md
+      - Mkdocs: mkdocs.md
+      - CodeSpace: Codespace.md
+  - Tópicos de React:
+      - Introdução: React/01_Intro.md
+      - Componentes: React/Componentes.md
+      - Hooks: React/Hooks.md
+      - Context API: React/ContextAPI.md
+      - React Router: React/ReactRouter.md
+      - Redux: React/Redux.md
