@@ -1,37 +1,32 @@
-/* src/pages/Login.css */
-
-/* Fundo da página inteira */
 .login-page {
-    min-height: 100vh; /* Permite scroll se a tela for pequena */
+    min-height: 100vh; 
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #f0f2f5;
     font-family: 'Inter', sans-serif;
-    padding: 1.5rem; /* Margem de segurança para não colar na borda */
+    padding: 1.5rem; 
     box-sizing: border-box;
 }
 
-/* O Cartão Central */
 .login-card {
     display: flex;
     width: 900px;
-    max-width: 100%; /* Garante que não ultrapassa a largura da tela */
-    min-height: 600px; /* Altura mínima, mas pode crescer */
-    height: auto;      /* FLEXIBILIDADE: Cresce conforme o conteúdo */
+    max-width: 100%; 
+    min-height: 600px; 
+    height: auto;      
     background: white;
     border-radius: 20px;
     box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
     overflow: hidden;
-    flex-wrap: wrap; /* Permite quebrar linha em telas intermédias */
+    flex-wrap: wrap; 
 }
 
-/* Lado Esquerdo (Visual) */
 .login-visual {
     flex: 1;
-    min-width: 300px; /* Garante que não fica esmagado */
-    background: linear-gradient(135deg, #5d52ff 20%, #ffe15e 80%); /* Suas cores originais */
+    min-width: 300px; 
+    background: linear-gradient(135deg, #ffffff 5%, #ffffff 50%); 
     display: flex;
     align-items: center;
     justify-content: center;

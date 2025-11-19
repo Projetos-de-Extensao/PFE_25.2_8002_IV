@@ -7,7 +7,6 @@ import "./Login.css";
 function Cadastro() {
   const navigate = useNavigate();
   
-  // Adicionado o campo 'role' (perfil)
   const [formData, setFormData] = useState({ 
     firstName: "", 
     lastName: "", 
@@ -39,13 +38,13 @@ function Cadastro() {
 
     // --- REGRAS DE VALIDAÇÃO DE E-MAIL ---
     
-    // 1. Regra para Alunos e Monitores
-    if ((role === 'aluno' || role === 'monitor') && !email.endsWith("@alunos.ibmec.edu.br")) {
-        alert("Alunos e Monitores devem usar o e-mail: @alunos.ibmec.edu.br");
+    // 1. Regra para Alunos
+    if (role === 'aluno' && !email.endsWith("@alunos.ibmec.edu.br")) {
+        alert("Alunos devem usar o e-mail: @alunos.ibmec.edu.br");
         return;
     }
 
-    // 2. Regra para Professores
+    // 2. Regra para Professores (ADICIONADA NOVAMENTE)
     if (role === 'professor' && !email.endsWith("@professores.ibmec.edu.br")) {
         alert("Professores devem usar o e-mail: @professores.ibmec.edu.br");
         return;
@@ -79,7 +78,7 @@ function Cadastro() {
             matricula: formData.matricula,
             email: formData.email,
             curso_slug: formData.cursoSlug,
-            role: formData.role // Salva se é aluno, prof, etc.
+            role: formData.role 
         }]);
         
         if (profileError) throw profileError;
@@ -116,12 +115,11 @@ function Cadastro() {
 
           <form onSubmit={handleSubmit}>
             
-            {/* NOVO CAMPO: SELEÇÃO DE PERFIL */}
+            {/* SELEÇÃO DE PERFIL ATUALIZADA */}
             <div className="input-group">
                 <label>Eu sou:</label>
                 <select name="role" value={formData.role} onChange={handleChange} required style={{fontWeight: 'bold', color: '#003366'}}>
                     <option value="aluno">Aluno</option>
-                    <option value="monitor">Monitor</option>
                     <option value="professor">Professor</option>
                     <option value="coord">Colaborador CASA</option>
                 </select>

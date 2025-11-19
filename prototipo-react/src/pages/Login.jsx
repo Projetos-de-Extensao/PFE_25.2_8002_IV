@@ -35,10 +35,10 @@ function Login() {
           return;
       }
 
+      // Redirecionamento (Monitor removido -> vai para aluno)
       switch (profile.role) {
           case 'coord': navigate('/painel-coordenador'); break;
           case 'professor': navigate('/painel-professor'); break;
-          // Caso 'monitor' removido, agora vai para o default (aluno)
           default: navigate('/painel-aluno');
       }
 
@@ -91,7 +91,6 @@ function Login() {
             <div className="dev-links-login">
                 <small>Atalhos (Dev):</small> 
                 <Link to="/painel-aluno">Aluno</Link> • 
-                {/* Link Monitor Removido */}
                 <Link to="/painel-professor">Prof.</Link> • 
                 <Link to="/painel-coordenador">CASA</Link>
             </div>
