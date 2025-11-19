@@ -1,20 +1,59 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { supabase } from '../supabaseClient';
 import './Layout.css';
 
 function TelaProfessores() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [candidatos, setCandidatos] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    // Função para buscar dados
+    const fetchCandidatos = async () => {
+        setLoading(true);
+        try {
+            // Busca TODAS as inscrições + dados do aluno (profile)
+            const { data, error } = await supabase
+                .from('inscricoes')
+                .select(`
+                    id,
+                    status,
+                    arquivo_url,
+                    user_id,
+                    profiles:user_id ( first_name, last_name, matricula ),
+                    vagas ( unidade, disciplinas (nome) )
+                `)
+                .order('created_at', { ascending: false });
+
+            if (error) throw error;
+            setCandidatos(data || []);
+        } catch (error) {
+            console.error("Erro:", error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const token = localStorage.getItem('apiToken');
-        fetch('http://localhost:8000/api/inscricao/', {
-            headers: { 'Authorization': `Token ${token}` }
-        })
-        .then(res => res.json())
-        .then(data => setCandidatos(data))
-        .catch(err => console.error(err));
+        fetchCandidatos();
     }, []);
+
+    // Função para Aprovar/Rejeitar
+    const handleDecisao = async (id, novaDecisao) => {
+        try {
+            const { error } = await supabase
+                .from('inscricoes')
+                .update({ status: novaDecisao })
+                .eq('id', id);
+
+            if (error) throw error;
+            
+            alert(`Candidato ${novaDecisao}!`);
+            fetchCandidatos(); // Recarrega a lista
+        } catch (err) {
+            alert("Erro ao atualizar: " + err.message);
+        }
+    };
 
     return (
         <div className={isSidebarOpen ? 'sidebar-open' : ''}>
@@ -34,14 +73,23 @@ function TelaProfessores() {
                 <h1>Seleção de Monitores</h1>
                 <div className="card">
                     <div className="card-header"><h4>Candidatos Pendentes</h4></div>
-                    {candidatos.length === 0 ? <p style={{padding:'1rem'}}>Nenhum candidato visível.</p> : candidatos.map(c => (
+                    
+                    {loading && <p style={{padding:'1rem'}}>Carregando...</p>}
+                    {!loading && candidatos.length === 0 && <p style={{padding:'1rem'}}>Nenhum candidato.</p>}
+
+                    {!loading && candidatos.map(c => (
                         <div className="monitor-item" key={c.id}>
                             <div className="monitor-info">
-                                <h5>{c.nome_aluno || "Aluno"}</h5>
-                                <p className="text-muted">Disciplina: {c.vaga.disciplina.nome}</p>
-                                {c.arquivo_historico && <a href={c.arquivo_historico} target="_blank" className="text-small">Ver Histórico</a>}
+                                {/* Exibe Nome + Sobrenome */}
+                                <h5>{c.profiles?.first_name} {c.profiles?.last_name} ({c.profiles?.matricula})</h5>
+                                <p className="text-muted">Disciplina: {c.vagas?.disciplinas?.nome} - {c.vagas?.unidade}</p>
+                                <p className="text-small">Status: <span className="badge bg-yellow">{c.status}</span></p>
+                                {c.arquivo_url && <a href={c.arquivo_url} target="_blank" className="text-small" style={{color: '#2563eb'}}>Ver PDF</a>}
                             </div>
-                            <button className="btn btn-primary">Aprovar</button>
+                            <div style={{display: 'flex', gap: '10px'}}>
+                                <button className="btn btn-primary" onClick={() => handleDecisao(c.id, 'APROVADO')}>Aprovar</button>
+                                <button className="btn btn-action" onClick={() => handleDecisao(c.id, 'REJEITADO')}>Rejeitar</button>
+                            </div>
                         </div>
                     ))}
                 </div>

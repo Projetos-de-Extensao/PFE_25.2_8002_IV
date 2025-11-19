@@ -1,88 +1,139 @@
-/* --- Layout Universal --- */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* src/pages/Layout.css - Estilo Minimalista com Texto em Azul Escuro */
+
+:root {
+    /* Cores da Marca */
+    --ibmec-blue: #003366;        /* Azul Institucional (Logo) */
+    --ibmec-blue-light: #2563eb;  /* Azul Brilhante (Ações/Links) */
+    
+    /* Cores de Fundo */
+    --bg-gray: #f4f7fe;           /* Fundo da página (Azuladinho muito claro) */
+    
+    /* Cores de Texto (Novas) */
+    --text-dark: #001029;         /* <--- AZUL BEM ESCURO (Quase preto) */
+    --text-muted: #475569;        /* Azul Acinzentado (para textos secundários) */
+}
 
 body {
-    min-width: 320px; min-height: 100vh;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background-color: #f4f7fe; color: #333;
+    background-color: var(--bg-gray);
+    color: var(--text-dark);      /* Aplica o azul escuro em todo o texto base */
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    margin: 0;
 }
 
-h1, h2, h3, h4, h5 { font-weight: 600; color: #1a1a1a; margin-bottom: 0.5rem; }
-h1 { font-size: 1.8rem; margin-bottom: 1.5rem; }
-h2 { font-size: 1.4rem; margin-top: 2rem; border-bottom: 1px solid #e0e0e0; padding-bottom: 0.5rem; }
-p { color: #666; font-size: 0.95rem; line-height: 1.6; }
-.text-muted { color: #888; font-size: 0.9rem; }
-.text-small { font-size: 0.8rem; }
-
-/* Header */
+/* Header Limpo */
 .app-header {
-    position: fixed; top: 0; left: 0; right: 0; height: 4rem;
-    background: #fff; border-bottom: 1px solid #eee;
-    display: flex; align-items: center; padding: 0 1.5rem;
-    z-index: 50; gap: 1rem;
+    position: fixed; top: 0; left: 0; right: 0; height: 64px;
+    background: white; border-bottom: 1px solid #e2e8f0;
+    display: flex; align-items: center; padding: 0 2rem;
+    z-index: 50;
 }
-.system-title { margin-left: auto; font-weight: 600; display: flex; align-items: center; gap: 0.8rem; }
-.system-title span { color: #666; font-size: 0.9rem; font-weight: 400; }
+
+.ibmec-logo { height: 32px; object-fit: contain; }
+
+.system-title { 
+    margin-left: auto; 
+    font-weight: 700; 
+    color: var(--ibmec-blue); /* Título no azul da marca */
+    display: flex; gap: 10px; align-items: center;
+}
+
 .user-avatar { 
-    width: 35px; height: 35px; background: #eee; border-radius: 50%; 
-    display: flex; align-items: center; justify-content: center; 
-    font-weight: bold; color: #555; font-size: 0.8rem;
+    width: 32px; height: 32px; 
+    background: var(--ibmec-blue); 
+    color: white; 
+    border-radius: 50%; 
+    display: flex; justify-content: center; align-items: center; 
+    font-size: 0.8rem; font-weight: 600;
 }
-.hamburger-menu { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; }
 
-/* Sidebar */
+/* Sidebar Minimalista */
 .sidebar {
-    position: fixed; top: 4rem; left: 0; bottom: 0; width: 16rem;
-    background: #fff; border-right: 1px solid #eee;
-    padding-top: 1.5rem; z-index: 40;
-    transition: transform 0.3s ease;
+    position: fixed; top: 64px; left: 0; bottom: 0; width: 240px;
+    background: white; border-right: 1px solid #e2e8f0;
+    padding-top: 1.5rem;
 }
-.sidebar-nav ul { list-style: none; }
+.sidebar-nav ul { list-style: none; padding: 0; margin: 0; }
+
 .sidebar-nav-item a {
-    display: flex; align-items: center; gap: 10px;
-    padding: 0.8rem 1.5rem; color: #555; text-decoration: none;
-    font-weight: 500; transition: background 0.2s;
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 24px; 
+    color: var(--text-muted); /* Texto normal do menu */
+    text-decoration: none;
+    font-weight: 500; 
+    transition: 0.2s;
 }
-.sidebar-nav-item a:hover { background: #f9fafb; color: #333; }
-.sidebar-nav-item.active a { background: #eff6ff; color: #2563eb; border-right: 3px solid #2563eb; }
-.material-icons { font-size: 1.2rem; }
 
-/* Main Content */
+/* Hover e Ativo no Menu */
+.sidebar-nav-item a:hover, .sidebar-nav-item.active a {
+    color: var(--ibmec-blue); /* Fica azul escuro ao passar o mouse */
+    background: #f0f5ff; 
+    border-right: 3px solid var(--ibmec-blue);
+}
+
+/* Conteúdo */
 .main-content {
-    margin-left: 16rem; margin-top: 4rem; padding: 2rem;
-    min-height: calc(100vh - 4rem);
+    margin-left: 240px; margin-top: 64px; padding: 2rem;
 }
 
-/* Cards */
-.card { background: #fff; border-radius: 12px; padding: 1.5rem; border: 1px solid #eee; margin-bottom: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid #f0f0f0; padding-bottom: 1rem; }
-.card-header h4 { margin: 0; font-size: 1.1rem; }
+/* Tipografia */
+h1 { font-size: 1.8rem; font-weight: 700; color: var(--text-dark); margin-bottom: 1.5rem; }
+h2 { font-size: 1.4rem; font-weight: 600; color: var(--ibmec-blue); margin-top: 2rem; margin-bottom: 1rem; }
+h4 { font-weight: 600; color: var(--text-dark); margin: 0; }
+p { line-height: 1.6; color: var(--text-muted); }
 
-/* Stats */
-.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
-.stats-grid .card { text-align: center; padding: 2rem; }
-.stats-grid .card-title { font-size: 2.5rem; font-weight: 700; color: #333; margin-top: 0.5rem; }
+/* Cartões Limpos */
+.card {
+    background: white; border-radius: 12px; padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,51,102,0.05); /* Sombra levemente azulada */
+    margin-bottom: 1.5rem;
+    border: 1px solid #eef2f6;
+}
 
-/* Lists */
-.monitor-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid #eee; }
+.card-header { 
+    border-bottom: 1px solid #f1f5f9; 
+    padding-bottom: 12px; 
+    margin-bottom: 15px; 
+    display: flex; justify-content: space-between; align-items: center;
+}
+
+/* Stats (Números Grandes) */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; }
+.stats-grid .card { text-align: center; }
+.stats-grid .card-title { 
+    font-size: 2.5rem; 
+    font-weight: 800; 
+    color: var(--ibmec-blue); /* Número em destaque azul */
+    margin-top: 0.5rem;
+}
+
+/* Botões */
+.btn { 
+    padding: 10px 20px; border-radius: 8px; border: none; 
+    cursor: pointer; font-weight: 600; font-size: 0.9rem;
+    transition: background 0.2s; text-decoration: none; display: inline-block;
+}
+
+.btn-primary { background: var(--ibmec-blue); color: white; }
+.btn-primary:hover { background: #002244; } /* Azul ainda mais escuro no hover */
+
+.btn-action { background: white; border: 1px solid #cbd5e1; color: var(--text-dark); }
+.btn-action:hover { background: #f8fafc; border-color: var(--ibmec-blue); color: var(--ibmec-blue); }
+
+/* Badges (Etiquetas) */
+.badge { padding: 5px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; }
+.bg-green { background: #dcfce7; color: #14532d; }
+.bg-yellow { background: #fef9c3; color: #713f12; }
+
+/* Listas */
+.monitor-item, .disciplina-item {
+    padding: 1rem 0; border-bottom: 1px solid #f1f5f9;
+    display: flex; justify-content: space-between; align-items: center;
+}
 .monitor-item:last-child { border-bottom: none; }
-.monitor-info h5 { margin: 0 0 0.3rem 0; font-size: 1rem; }
 
-/* Buttons & Badges */
-.btn { padding: 0.6rem 1.2rem; border-radius: 6px; font-weight: 500; cursor: pointer; border: none; font-size: 0.9rem; text-decoration: none; display: inline-block; transition: 0.2s; }
-.btn-primary { background: #2563eb; color: #fff; }
-.btn-primary:hover { background: #1d4ed8; }
-.btn-action { background: #f3f4f6; color: #374151; border: 1px solid #e5e7eb; }
-.btn-action:hover { background: #e5e7eb; }
-.badge { padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
-.bg-green { background: #d1fae5; color: #065f46; }
-.bg-yellow { background: #fef3c7; color: #92400e; }
-
-@media (max-width: 900px) {
-    .sidebar { transform: translateX(-100%); left: 0; }
+/* Responsividade */
+@media (max-width: 768px) {
+    .sidebar { display: none; } 
     .main-content { margin-left: 0; }
-    .hamburger-menu { display: block; }
-    .sidebar-open .sidebar { transform: translateX(0); }
-    .app-header { padding-left: 1rem; }
-    .system-title span { display: none; }
+    .hamburger-menu { display: block; color: var(--ibmec-blue); }
 }

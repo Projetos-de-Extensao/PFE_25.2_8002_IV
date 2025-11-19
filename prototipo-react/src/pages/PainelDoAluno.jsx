@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { supabase } from '../supabaseClient';
 import './Layout.css';
 
 function PainelDoAluno() {
@@ -8,14 +9,36 @@ function PainelDoAluno() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const token = localStorage.getItem('apiToken');
-        fetch('http://localhost:8000/api/inscricao/', {
-            headers: { 'Authorization': `Token ${token}` }
-        })
-        .then(res => res.json())
-        .then(data => setInscricoes(data))
-        .catch(err => console.error(err))
-        .finally(() => setLoading(false));
+        const fetchInscricoes = async () => {
+            try {
+                // 1. Pega o usuário logado
+                const { data: { user } } = await supabase.auth.getUser();
+                
+                if (user) {
+                    // 2. Busca inscrições + dados da vaga + nome da disciplina
+                    const { data, error } = await supabase
+                        .from('inscricoes')
+                        .select(`
+                            id,
+                            status,
+                            vagas (
+                                unidade,
+                                disciplinas (nome)
+                            )
+                        `)
+                        .eq('user_id', user.id); // Filtra só as minhas
+
+                    if (error) throw error;
+                    setInscricoes(data || []);
+                }
+            } catch (error) {
+                console.error("Erro ao buscar dados:", error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchInscricoes();
     }, []);
 
     return (
@@ -38,12 +61,23 @@ function PainelDoAluno() {
                     <div className="card"><p className="text-muted">Inscrições Feitas</p><div className="card-title">{inscricoes.length}</div></div>
                     <div className="card"><p className="text-muted">Média CR</p><div className="card-title">--</div></div>
                 </div>
+
                 <h2>Minhas Inscrições</h2>
                 {loading && <p>Carregando...</p>}
-                {!loading && inscricoes.map(i => (
-                    <div className="card" key={i.id}>
-                        <div className="card-header"><h4>{i.vaga.disciplina.nome}</h4><span className="badge bg-yellow">{i.status}</span></div>
-                        <p>Unidade: {i.vaga.unidade}</p>
+                {!loading && inscricoes.length === 0 && (
+                    <div className="card"><div className="card-content"><p>Você ainda não se inscreveu em nenhuma vaga.</p></div></div>
+                )}
+                
+                {!loading && inscricoes.map((item) => (
+                    <div className="card" key={item.id}>
+                        <div className="card-header">
+                            {/* Acessa dados aninhados (vagas -> disciplinas -> nome) */}
+                            <h4>{item.vagas?.disciplinas?.nome || "Disciplina"}</h4>
+                            <span className={`badge ${item.status === 'APROVADO' ? 'bg-green' : 'bg-yellow'}`}>
+                                {item.status}
+                            </span>
+                        </div>
+                        <p>Unidade: {item.vagas?.unidade}</p>
                     </div>
                 ))}
             </main>

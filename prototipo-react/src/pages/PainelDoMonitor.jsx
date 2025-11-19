@@ -1,22 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { supabase } from '../supabaseClient';
 import './Layout.css';
 
 function PainelDoMonitor() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [monitorias, setMonitorias] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const token = localStorage.getItem('apiToken');
-        fetch('http://localhost:8000/api/inscricao/', {
-            headers: { 'Authorization': `Token ${token}` }
-        })
-        .then(res => res.json())
-        .then(data => {
-            const aprovadas = data.filter(i => i.status === 'CANDIDATURA APROVADA' || i.status === 'APROVADO');
-            setMonitorias(aprovadas);
-        })
-        .catch(err => console.error(err));
+        const fetchMonitorias = async () => {
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (user) {
+                    const { data, error } = await supabase
+                        .from('inscricoes')
+                        .select(`
+                            id,
+                            status,
+                            vagas ( unidade, disciplinas (nome) )
+                        `)
+                        .eq('user_id', user.id)
+                        .eq('status', 'APROVADO'); // <--- FILTRO IMPORTANTE
+
+                    if (error) throw error;
+                    setMonitorias(data || []);
+                }
+            } catch (error) {
+                console.error("Erro:", error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchMonitorias();
     }, []);
 
     return (
@@ -38,11 +54,23 @@ function PainelDoMonitor() {
                 <div className="stats-grid">
                     <div className="card"><p className="text-muted">Monitorias Ativas</p><div className="card-title">{monitorias.length}</div></div>
                 </div>
+
                 <h2>Minhas Turmas</h2>
-                {monitorias.length === 0 ? <div className="card"><p>Nenhuma monitoria ativa.</p></div> : monitorias.map(m => (
-                    <div className="card" key={m.id}>
-                        <div className="card-header"><h4>{m.vaga.disciplina.nome}</h4><span className="badge bg-green">Ativo</span></div>
-                        <div className="disciplina-details-grid"><button className="btn btn-action">Frequência</button></div>
+                {loading && <p>Carregando...</p>}
+                {!loading && monitorias.length === 0 && (
+                    <div className="card"><div className="card-content"><p>Nenhuma monitoria ativa (Status APROVADO necessário).</p></div></div>
+                )}
+
+                {!loading && monitorias.map((item) => (
+                    <div className="card disciplina-item" key={item.id}>
+                        <div className="disciplina-header">
+                            <h4>{item.vagas?.disciplinas?.nome}</h4>
+                            <span className="badge bg-green">Ativo</span>
+                        </div>
+                        <p>Unidade: {item.vagas?.unidade}</p>
+                        <div className="disciplina-details-grid">
+                            <button className="btn btn-action">Frequência</button>
+                        </div>
                     </div>
                 ))}
             </main>
